@@ -2,7 +2,7 @@ package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
 
-public class unilabsReader {
+public class SRKReader {
     public static int plusLine = 0;
 
     public static String[] splitText(String text) {
@@ -10,13 +10,13 @@ public class unilabsReader {
     }
 
     public static String getSender(String[] splitText) {
-        String Sender = splitText[1].substring(3);
+        String Sender = splitText[2].substring(26);
         Sender = Sender.trim();
         return Sender;
     }
 
     public static String getName(String[] splitText) {
-        String name = splitText[7];
+        String name = splitText[14].substring(0,10);
         name = name.trim();
         return name;
     }
@@ -25,55 +25,31 @@ public class unilabsReader {
         PID=settedPID.toString();
     }
     public static String getAuftragsnummer(String[] splitText) {
-        int begindex = splitText[8].indexOf("Auftrag");
-        String nummer = splitText[8].substring(begindex + 16);
+        int begindex = splitText[15].indexOf("FID");
+        String nummer = splitText[15].substring(begindex + 4,begindex + 14);
         nummer = nummer.trim();
         return nummer;
     }
 
     public static String getEntnahmeDatum(String[] splitText) {
-        String EntnahmeDatum = splitText[9].substring(10, 20);
+        String EntnahmeDatum = splitText[11].substring(15);
         EntnahmeDatum = EntnahmeDatum.trim();
         return EntnahmeDatum;
     }
 
-    public static String getEntnahmeZeit(String[] splitText) {
-        String EntnahmeZeit = splitText[9].substring(20);
-        EntnahmeZeit = EntnahmeZeit.trim();
-        return EntnahmeZeit;
-    }
-
-    public static String getAuftragseingangsDatum(String[] splitText) {
-        String AuftragseingangsDatum = splitText[10].substring(16, 27);
-        AuftragseingangsDatum = AuftragseingangsDatum.trim();
-        return AuftragseingangsDatum;
-    }
-
-    public static String getAuftragseingangsZeit(String[] splitText) {
-        String AuftragseingangsZeit = splitText[10].substring(27);
-        AuftragseingangsZeit = AuftragseingangsZeit.trim();
-        return AuftragseingangsZeit;
-    }
-
     public static String getAuftragsausgangsDatum(String[] splitText) {
-        String AuftragsausgangsDatum = splitText[11].substring(16, 27);
+        String AuftragsausgangsDatum = splitText[13].substring(13);
         AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
         return AuftragsausgangsDatum;
     }
 
-    public static String getAuftragsausgangsZeit(String[] splitText) {
-        String AuftragsausgangsZeit = splitText[11].substring(27);
-        AuftragsausgangsZeit = AuftragsausgangsZeit.trim();
-        return AuftragsausgangsZeit;
-    }
-
     public static String getAuftragGeber(String[] splitText) {
-        String Auftraggeber = splitText[6];
+        String Auftraggeber = splitText[7];
         Auftraggeber = Auftraggeber.trim();
         return Auftraggeber;
     }
     public static String getTalspiegel(String[] splitText) {
-        String Talspiegel = splitText[22].substring(13,18);
+        String Talspiegel = splitText[21];
         Talspiegel = Talspiegel.trim();
         return Talspiegel;
     }
@@ -96,29 +72,9 @@ public class unilabsReader {
             System.out.println("Kein Entnahmedatum erkennbar");
         }
         try {
-            list.put("EntnahmeZeit", getEntnahmeZeit(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Keine Entnahmezeit erkennbar");
-        }
-        try {
-            list.put("AuftragseingangsDatum", getAuftragseingangsDatum(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Kein Auftragseingangsdatum erkennbar");
-        }
-        try {
-            list.put("AuftragseingangsZeit", getAuftragseingangsZeit(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Keine Auftragseingangszeit erkennbar");
-        }
-        try {
             list.put("Auftragsausgangsdatum", getAuftragsausgangsDatum(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Auftragseingangsdatum erkennbar");
-        }
-        try {
-            list.put("AuftragsausgangsZeit", getAuftragsausgangsZeit(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Keine Auftragsausgangszeit erkennbar");
         }
         try {
             list.put("Auftraggeber", getAuftragGeber(splitText(text)));
@@ -131,7 +87,7 @@ public class unilabsReader {
             System.out.println("Keine PID erkennbar");
         }
         try {
-            list.put("Infliximab Talspiegel", getTalspiegel(splitText(text)));
+            list.put("RHD", getTalspiegel(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Resultate erkennbar");
         }

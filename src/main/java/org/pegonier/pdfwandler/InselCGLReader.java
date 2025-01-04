@@ -2,7 +2,7 @@ package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
 
-public class unilabsReader {
+public class InselCGLReader {
     public static int plusLine = 0;
 
     public static String[] splitText(String text) {
@@ -10,78 +10,59 @@ public class unilabsReader {
     }
 
     public static String getSender(String[] splitText) {
-        String Sender = splitText[1].substring(3);
+        String Sender = splitText[12];
         Sender = Sender.trim();
         return Sender;
     }
 
-    public static String getName(String[] splitText) {
-        String name = splitText[7];
-        name = name.trim();
-        return name;
+    public static String getGebDatum(String[] splitText) {
+        String GebDatum = splitText[9].substring(4,15);
+        GebDatum = GebDatum.trim();
+        return GebDatum;
     }
-    static String PID = " keine PID eingegeben";
-    public static void setPID(Integer settedPID) {
-        PID=settedPID.toString();
+    public static String getPID(String[] splitText) {
+        String PID = splitText[8].substring(19);
+        PID = PID.trim();
+        return PID;
     }
     public static String getAuftragsnummer(String[] splitText) {
-        int begindex = splitText[8].indexOf("Auftrag");
-        String nummer = splitText[8].substring(begindex + 16);
+        String nummer = splitText[20];
         nummer = nummer.trim();
         return nummer;
     }
 
     public static String getEntnahmeDatum(String[] splitText) {
-        String EntnahmeDatum = splitText[9].substring(10, 20);
+        String EntnahmeDatum = splitText[47].substring(13,23);
         EntnahmeDatum = EntnahmeDatum.trim();
         return EntnahmeDatum;
     }
-
     public static String getEntnahmeZeit(String[] splitText) {
-        String EntnahmeZeit = splitText[9].substring(20);
+        String EntnahmeZeit = splitText[47].substring(24,29);
         EntnahmeZeit = EntnahmeZeit.trim();
         return EntnahmeZeit;
     }
 
-    public static String getAuftragseingangsDatum(String[] splitText) {
-        String AuftragseingangsDatum = splitText[10].substring(16, 27);
-        AuftragseingangsDatum = AuftragseingangsDatum.trim();
-        return AuftragseingangsDatum;
-    }
-
-    public static String getAuftragseingangsZeit(String[] splitText) {
-        String AuftragseingangsZeit = splitText[10].substring(27);
-        AuftragseingangsZeit = AuftragseingangsZeit.trim();
-        return AuftragseingangsZeit;
-    }
-
     public static String getAuftragsausgangsDatum(String[] splitText) {
-        String AuftragsausgangsDatum = splitText[11].substring(16, 27);
+        String AuftragsausgangsDatum = splitText[42].substring(13);
         AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
         return AuftragsausgangsDatum;
     }
 
-    public static String getAuftragsausgangsZeit(String[] splitText) {
-        String AuftragsausgangsZeit = splitText[11].substring(27);
-        AuftragsausgangsZeit = AuftragsausgangsZeit.trim();
-        return AuftragsausgangsZeit;
-    }
-
     public static String getAuftragGeber(String[] splitText) {
-        String Auftraggeber = splitText[6];
+        String Auftraggeber = splitText[7];
         Auftraggeber = Auftraggeber.trim();
         return Auftraggeber;
     }
-    public static String getTalspiegel(String[] splitText) {
-        String Talspiegel = splitText[22].substring(13,18);
-        Talspiegel = Talspiegel.trim();
-        return Talspiegel;
+    public static String getABL1(String[] splitText) {
+        String ABL1 = splitText[22].substring(34,39);
+        ABL1 = ABL1.trim();
+        return ABL1;
     }
 
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
         try {
-            list.put("Geburtsdatum", getName(splitText(text)));
+            list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Geburtsdatum erkennbar");
         }
@@ -89,6 +70,11 @@ public class unilabsReader {
             list.put("Auftragsnummer", getAuftragsnummer(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Auftragsnummer erkennbar");
+        }
+        try {
+            list.put("PID", getPID(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Keine PID erkennbar");
         }
         try {
             list.put("EntnahmeDatum", getEntnahmeDatum(splitText(text)));
@@ -101,24 +87,9 @@ public class unilabsReader {
             System.out.println("Keine Entnahmezeit erkennbar");
         }
         try {
-            list.put("AuftragseingangsDatum", getAuftragseingangsDatum(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Kein Auftragseingangsdatum erkennbar");
-        }
-        try {
-            list.put("AuftragseingangsZeit", getAuftragseingangsZeit(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Keine Auftragseingangszeit erkennbar");
-        }
-        try {
             list.put("Auftragsausgangsdatum", getAuftragsausgangsDatum(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Auftragseingangsdatum erkennbar");
-        }
-        try {
-            list.put("AuftragsausgangsZeit", getAuftragsausgangsZeit(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Keine Auftragsausgangszeit erkennbar");
         }
         try {
             list.put("Auftraggeber", getAuftragGeber(splitText(text)));
@@ -126,12 +97,7 @@ public class unilabsReader {
             System.out.println("Kein Auftraggeber erkennbar");
         }
         try {
-            list.put("PID", PID);
-        } catch (Exception e) {
-            System.out.println("Keine PID erkennbar");
-        }
-        try {
-            list.put("Infliximab Talspiegel", getTalspiegel(splitText(text)));
+            list.put("RHD", getABL1(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Resultate erkennbar");
         }
@@ -143,3 +109,4 @@ public class unilabsReader {
         return list;
     }
 }
+

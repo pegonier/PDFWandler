@@ -1,29 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.scene.control.Button?>
-<VBox scaleShape="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.pegonier.pdfwandler.MainController">
+<VBox prefHeight="483.0" prefWidth="401.0" scaleShape="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pegonier.pdfwandler.MainController">
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    <TextField fx:id="inputField" promptText="Auftragsnummer oder PID"/>
+   <AnchorPane prefHeight="273.0" prefWidth="350.0">
+      <children>
+              <Button alignment="TOP_CENTER" layoutX="280.0" layoutY="33.0" onAction="#umwandeln" text="Umwandeln" />
+           <TextField fx:id="inputField" layoutY="33.0" prefHeight="25.0" prefWidth="138.0" promptText="Auftragsnummer" />
+      
+      
+          <Label fx:id="welcomeText" layoutX="6.0" layoutY="72.0" prefHeight="377.0" prefWidth="350.0" />
+              <Region fx:id="spacer" prefHeight="0.0" prefWidth="350.0" />
+         <ChoiceBox fx:id="DokChoice" layoutY="2.0" prefHeight="25.0" prefWidth="273.0" />
+         <Button fx:id="erkennen" layoutX="287.0" layoutY="2.0" onAction="#erkennen" text="erkennen" />
+      </children>
+   </AnchorPane>
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-
-    <Button alignment="TOP_LEFT" text="Bestätigen" onAction="#Bestaetigen"/>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
-    <Button text="Umwandeln" onAction="#umwandeln"/>
-
-    <Label fx:id="welcomeText"/>
 
 </VBox>
