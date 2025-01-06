@@ -60,4 +60,18 @@ public class MainController {
             System.out.println("erstellen des Dokuments fehlgeschlagen");
         }
     }
+
+    public void openPDF(String Path) {
+        try {
+            dokSourceCheck dokCheck = new dokSourceCheck();
+            welcomeText.setText(dokCheck.dokSource(Path));
+            HashMap<String, String> dokHashmap = dokCheck.dokHash;
+            String Auftragsnummer = dokHashmap.get("Auftragsnummer");
+            inputField.setText(Auftragsnummer);
+
+        } catch (Exception e) {
+            welcomeText.setText("Bitte eine Datei wählen");
+        }
+
+    }
 }

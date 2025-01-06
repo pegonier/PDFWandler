@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainApplication extends Application {
+    private static String pdfPath;
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
@@ -15,9 +16,17 @@ public class MainApplication extends Application {
         stage.setTitle("PDFWandler");
         stage.setScene(scene);
         stage.show();
+
+        MainController controller = fxmlLoader.getController();
+        if (pdfPath != null) {
+            controller.openPDF(pdfPath);
+        }
     }
 
     public static void main(String[] args) {
+        if (args.length > 0) {
+            pdfPath = args[0];
+        }
         launch();
     }
 }
