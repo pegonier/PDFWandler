@@ -3,7 +3,6 @@ package org.pegonier.pdfwandler;
 import java.util.HashMap;
 
 public class SRKReader {
-    public static int plusLine = 0;
 
     public static String[] splitText(String text) {
         return text.split("\n");
@@ -48,10 +47,10 @@ public class SRKReader {
         Auftraggeber = Auftraggeber.trim();
         return Auftraggeber;
     }
-    public static String getTalspiegel(String[] splitText) {
-        String Talspiegel = splitText[21];
-        Talspiegel = Talspiegel.trim();
-        return Talspiegel;
+    public static String getResult1(String[] splitText) {
+        String Result1 = splitText[21];
+        Result1 = Result1.trim();
+        return Result1;
     }
 
     public static HashMap<String, String> list(String text) {
@@ -87,7 +86,7 @@ public class SRKReader {
             System.out.println("Keine PID erkennbar");
         }
         try {
-            list.put("RHD", getTalspiegel(splitText(text)));
+            list.put("RHD", getResult1(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Resultate erkennbar");
         }

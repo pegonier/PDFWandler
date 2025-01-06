@@ -3,8 +3,6 @@ package org.pegonier.pdfwandler;
 import java.util.HashMap;
 
 public class unilabsReader {
-    public static int plusLine = 0;
-
     public static String[] splitText(String text) {
         return text.split("\n");
     }
@@ -68,15 +66,16 @@ public class unilabsReader {
     }
 
     public static String getAuftragGeber(String[] splitText) {
-        String Auftraggeber = splitText[6];
+        String Auftraggeber = splitText[12].substring(13);
         Auftraggeber = Auftraggeber.trim();
         return Auftraggeber;
     }
-    public static String getTalspiegel(String[] splitText) {
-        String Talspiegel = splitText[22].substring(13,18);
-        Talspiegel = Talspiegel.trim();
-        return Talspiegel;
+    public static String getResult1(String[] splitText) {
+        String Result1 = splitText[22].substring(13,18);
+        Result1 = Result1.trim();
+        return Result1;
     }
+
 
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
@@ -131,7 +130,7 @@ public class unilabsReader {
             System.out.println("Keine PID erkennbar");
         }
         try {
-            list.put("Infliximab Talspiegel", getTalspiegel(splitText(text)));
+            list.put("Result1", getResult1(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Resultate erkennbar");
         }

@@ -15,17 +15,17 @@ public class dokSourceCheck {
         if (dokString.contains("SRK")&dokString.contains("RHD")&dokString.contains("Allel")) {
             dokType = String.valueOf(SRKReader.list(dokString));
             dokHash = SRKReader.list(dokString);
-            setDokHash(dokHash);
+            setOutHash(dokHash);
         }
         if (dokString.contains("unilabs")&dokString.contains("Infliximab")) {
             dokType = String.valueOf(unilabsReader.list(dokString));
             dokHash = unilabsReader.list(dokString);
-            setDokHash(dokHash);
+            setOutHash(dokHash);
         }
         if (dokString.contains("CGL Hämatologie ")) {
             dokType = String.valueOf(InselCGLReader.list(dokString));
             dokHash = InselCGLReader.list(dokString);
-            setDokHash(dokHash);
+            setOutHash(dokHash);
         }
         if (dokString.contains("Anmeldung Radiologie")) {
             dokType = "Anmeldung Radiologie";
@@ -35,11 +35,7 @@ public class dokSourceCheck {
         dokType=dokType.replace(",","\n");
         return dokType;
     }
-    public void setDokHash(HashMap<String, String>inHash) {
+    public void setOutHash(HashMap<String, String>inHash) {
         HashOut = inHash;
-    }
-    public HashMap<String, String> getDokHash() {
-        System.out.println(HashOut);
-        return HashOut;
     }
 }

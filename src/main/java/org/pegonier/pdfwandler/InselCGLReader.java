@@ -3,7 +3,6 @@ package org.pegonier.pdfwandler;
 import java.util.HashMap;
 
 public class InselCGLReader {
-    public static int plusLine = 0;
 
     public static String[] splitText(String text) {
         return text.split("\n");
@@ -53,10 +52,10 @@ public class InselCGLReader {
         Auftraggeber = Auftraggeber.trim();
         return Auftraggeber;
     }
-    public static String getABL1(String[] splitText) {
-        String ABL1 = splitText[22].substring(34,39);
-        ABL1 = ABL1.trim();
-        return ABL1;
+    public static String getResult1(String[] splitText) {
+        String Result1 = splitText[22].substring(34,39);
+        Result1 = Result1.trim();
+        return Result1;
     }
 
     public static HashMap<String, String> list(String text) {
@@ -97,7 +96,7 @@ public class InselCGLReader {
             System.out.println("Kein Auftraggeber erkennbar");
         }
         try {
-            list.put("RHD", getABL1(splitText(text)));
+            list.put("Result1", getResult1(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Resultate erkennbar");
         }

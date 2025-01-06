@@ -22,7 +22,7 @@
           <Label fx:id="welcomeText" layoutX="6.0" layoutY="72.0" prefHeight="377.0" prefWidth="350.0" />
               <Region fx:id="spacer" prefHeight="0.0" prefWidth="350.0" />
          <ChoiceBox fx:id="DokChoice" layoutY="2.0" prefHeight="25.0" prefWidth="273.0" />
-         <Button fx:id="erkennen" layoutX="287.0" layoutY="2.0" onAction="#erkennen" text="erkennen" />
+         <Button fx:id="pruefen" layoutX="287.0" layoutY="2.0" onAction="#pruefen" text="prüfen" />
       </children>
    </AnchorPane>
     <padding>
