@@ -12,9 +12,9 @@ public class dokSourceCheck {
         String dokType ="";
         pdfReader dok = new pdfReader();
         String dokString = String.valueOf(dok.TextPdfOutput(Path));
-        if (dokString.contains("SRK")&dokString.contains("RHD")&dokString.contains("Allel")) {
-            dokType = String.valueOf(SRKReader.list(dokString));
-            dokHash = SRKReader.list(dokString);
+        if (dokString.contains("SRK")) {
+            dokType = String.valueOf(RHDReader.list(dokString));
+            dokHash = RHDReader.list(dokString);
             setOutHash(dokHash);
         }
         if (dokString.contains("unilabs")&dokString.contains("Infliximab")) {
@@ -23,8 +23,8 @@ public class dokSourceCheck {
             setOutHash(dokHash);
         }
         if (dokString.contains("CGL Hämatologie ")) {
-            dokType = String.valueOf(InselCGLReader.list(dokString));
-            dokHash = InselCGLReader.list(dokString);
+            dokType = String.valueOf(CGLInselReader.list(dokString));
+            dokHash = CGLInselReader.list(dokString);
             setOutHash(dokHash);
         }
         if (dokString.contains("Anmeldung Radiologie")) {
