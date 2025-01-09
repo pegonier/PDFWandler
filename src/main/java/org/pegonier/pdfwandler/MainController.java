@@ -2,7 +2,6 @@ package org.pegonier.pdfwandler;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -18,9 +17,11 @@ public class MainController {
     @FXML
     Label welcomeText;
     @FXML
-    private static TextField inputField;
+    private TextField inputField;
     @FXML
-    private static TextField inputField2;
+    private TextField inputField2;
+    @FXML
+    private TextField inputField3;
     @FXML
     private ChoiceBox <String>DokChoice;
     @FXML
@@ -32,12 +33,22 @@ public class MainController {
         List.addAll(Arrays.asList(dokList));
         DokChoice.setOnAction((event) -> pruefen());
     }
-    public static String fieldGetter() {
-        return inputField.getText();
+    @FXML
+    public String fieldGetter() {
+        String ANR = inputField.getText();
+        return ANR;
     }
-    public static String fieldGetter2() {
-        return inputField2.getText();
+    @FXML
+    public String fieldGetter2() {
+        String PID = inputField2.getText();
+        return PID;
     }
+    @FXML
+    public String fieldGetter3() {
+        String Name = inputField3.getText();
+        return Name;
+    }
+
     public void pruefen() {
         chosenDokStr = "C:\\Users\\gaeph\\Documents\\Intellijinputs\\" +
                 DokChoice.getValue();
@@ -54,23 +65,12 @@ public class MainController {
     protected void umwandeln() throws IOException {
         System.out.println(chosenDokStr);
         try {
-            fieldGetter();
-        }
-        catch (Exception e) {
-            System.out.println("keine Auftragsnummer vorhanden");
-        }
-        try {
             HL7Parser outPars = new HL7Parser();
             outPars.pars(dokHashmap);
         }
         catch (Exception e) {
             System.out.println("erstellen des Dokuments fehlgeschlagen");
-        }/*
-        String textPath ="C:\\Users\\gaeph\\Documents\\Intellijoutputs\\"+DokChoice.getValue()+".txt";
-        pdfReader textAusgabe = new pdfReader();
-        String text = String.valueOf(textAusgabe.TextPdfOutput(chosenDokStr));
-        textSaver.SaveTxT(text,textPath);
-        */
+        }
     }
 
     public void openPDF(String Path) {
@@ -89,12 +89,33 @@ public class MainController {
     public void ANRsetzen(ActionEvent event) {
         String Pid = fieldGetter();
         dokHashmap.put("Auftragsnummer",Pid);
-        welcomeText.setText(String.valueOf(dokHashmap));
+        String dokType=String.valueOf(dokHashmap);
+        dokType=dokType.replace("}", "");
+        dokType=dokType.replace("{", " ");
+        dokType=dokType.replace(",","\n");
+        welcomeText.setText(dokType);
     }
     @FXML
     public void PIDsetzen(ActionEvent event ) {
         String Pid = fieldGetter2();
         dokHashmap.put("PID",Pid);
-        welcomeText.setText(String.valueOf(dokHashmap));
+        String dokType=String.valueOf(dokHashmap);
+        dokType=dokType.replace("}", "");
+        dokType=dokType.replace("{", " ");
+        dokType=dokType.replace(",","\n");
+        welcomeText.setText(dokType);
+    }
+    @FXML
+    public void Name(ActionEvent event) {
+        String Name= fieldGetter3();
+        dokHashmap.put("Name",Name);
+        String dokType=String.valueOf(dokHashmap);
+        dokType=dokType.replace("}", "");
+        dokType=dokType.replace("{", " ");
+        dokType=dokType.replace(",","\n");
+        welcomeText.setText(dokType);
+    }
+
+    public void Properties(ActionEvent event) {
     }
 }
