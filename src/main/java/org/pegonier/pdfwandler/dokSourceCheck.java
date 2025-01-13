@@ -10,8 +10,9 @@ public class dokSourceCheck {
 
     public String dokSource (String Path) throws IOException {
         String dokType ="";
-        pdfReader dok = new pdfReader();
-        String dokString = String.valueOf(dok.TextPdfOutput(Path));
+        pdfReader dok = new pdfReader(); String dokString = String.valueOf(dok.TextPdfOutput(Path));
+        //BOXReader dok = new BOXReader();
+        //String dokString = String.valueOf(dok.BOXReader(Path));
         if (dokString.contains("SRK")) {
             dokType = String.valueOf(RHDReader.list(dokString));
             dokHash = RHDReader.list(dokString);
@@ -25,6 +26,11 @@ public class dokSourceCheck {
         if (dokString.contains("CGL Hämatologie ")) {
             dokType = String.valueOf(CGLInselReader.list(dokString));
             dokHash = CGLInselReader.list(dokString);
+            setOutHash(dokHash);
+        }
+        if (dokString.contains("Laboratoire")) {
+            dokType = String.valueOf(AdalimumabCHUV.list(dokString));
+            dokHash = AdalimumabCHUV.list(dokString);
             setOutHash(dokHash);
         }
         if (dokString.contains("Anmeldung Radiologie")) {

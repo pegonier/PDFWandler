@@ -10,27 +10,22 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="569.0" prefWidth="401.0" scaleShape="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pegonier.pdfwandler.MainController">
+<VBox prefHeight="465.0" prefWidth="401.0" scaleShape="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pegonier.pdfwandler.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <AnchorPane prefHeight="273.0" prefWidth="350.0">
       <children>
 
-          <Label fx:id="welcomeText" alignment="TOP_LEFT" layoutY="193.0" prefHeight="333.0" prefWidth="350.0" />
+          <Label fx:id="welcomeText" alignment="TOP_LEFT" layoutY="139.0" prefHeight="314.0" prefWidth="350.0" />
               <Region fx:id="spacer" prefHeight="0.0" prefWidth="350.0" />
          <ChoiceBox fx:id="DokChoice" layoutY="2.0" prefHeight="25.0" prefWidth="361.0" />
           <TextField fx:id="inputField" layoutY="33.0" onAction="#ANRsetzen" prefHeight="25.0" prefWidth="138.0" promptText="Auftragsnummer" />
-         <Button fx:id="ANRsetzen" layoutX="202.0" layoutY="33.0" onAction="#ANRsetzen" text="ändern" />
          <TextField fx:id="inputField2" layoutY="60.0" onAction="#PIDsetzen" prefWidth="138.0" promptText="PID" />
-         <Button fx:id="PIDsetzen" layoutX="202.0" layoutY="60.0" onAction="#PIDsetzen" text="ändern" />
          <TextField fx:id="inputField3" layoutY="85.0" onAction="#Name" prefHeight="25.0" prefWidth="196.0" promptText="Vorname^Nachname" />
-         <Button fx:id="Name" layoutX="202.0" layoutY="85.0" onAction="#Name" text="ändern" />
-         <TextField fx:id="inputField4" layoutY="110.0" prefHeight="25.0" prefWidth="95.0" promptText="Geburtsdatum" />
-          <Button fx:id="Name1" layoutX="202.0" layoutY="110.0" onAction="#Geburtsdatum" text="ändern" />
-         <TextField fx:id="inputField5" layoutY="135.0" prefHeight="25.0" prefWidth="95.0" promptText="Gender" />
-         <Button fx:id="Name2" layoutX="202.0" layoutY="135.0" onAction="#Gender" text="ändern" />
-          <Button alignment="TOP_CENTER" layoutX="267.0" layoutY="135.0" onAction="#umwandeln" text="Umwandeln" />
+         <TextField fx:id="inputField4" layoutX="220.0" layoutY="60.0" onAction="#Geburtsdatum" prefHeight="25.0" prefWidth="95.0" promptText="Geburtsdatum" />
+         <TextField fx:id="inputField5" layoutX="220.0" layoutY="85.0" onAction="#Gender" prefHeight="25.0" prefWidth="95.0" promptText="Gender" />
+          <Button alignment="TOP_CENTER" layoutX="220.0" layoutY="110.0" onAction="#umwandeln" text="Umwandeln" />
           <Button fx:id="Properties" layoutX="325.0" layoutY="33.0" onAction="#Properties" text="*" />
       </children>
    </AnchorPane>

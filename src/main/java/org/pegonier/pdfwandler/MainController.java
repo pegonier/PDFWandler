@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -36,16 +35,10 @@ public class MainController {
     private TextField inputField5;
     @FXML
     private ChoiceBox <String>DokChoice;
-    HashMap<Object, Object> PathMap;
+    public static HashMap<Object, Object> PathMap;
     @FXML
     private void initialize() {
         File f = new File("C:/Users/gaeph/Documents/Intellijinputs");
-        CheckInFolder doks = new CheckInFolder();
-        String [] dokList = doks.listDir(f);
-        ObservableList<String> List = DokChoice.getItems();
-        List.addAll(Arrays.asList(dokList));
-        DokChoice.setOnAction((event) -> pruefen());
-
         Properties props = new Properties();
         String currentDir = System.getProperty("user.dir");
         currentDir = currentDir.replace("\\","/");
@@ -54,29 +47,34 @@ public class MainController {
         System.out.println(currentDir);
         try (FileInputStream fis = new FileInputStream(currentDir)) {
             props.load(fis);
+
+            PathMap = new HashMap<>(props);
+
+            //File f = new File(String.valueOf(PathMap.get("InPath")));
+            CheckInFolder doks = new CheckInFolder();
+            String [] dokList = doks.listDir(f);
+            ObservableList<String> List = DokChoice.getItems();
+            List.addAll(Arrays.asList(dokList));
+            DokChoice.setOnAction((event) -> pruefen());
         } catch (IOException e) {
             e.printStackTrace();
+            welcomeText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
         }
-        PathMap = new HashMap<>(props);
     }
     @FXML
     public String fieldGetter() {
-        String ANR = inputField.getText();
-        return ANR;
+        return inputField.getText();
     }
     @FXML
     public String fieldGetter2() {
-        String PID = inputField2.getText();
-        return PID;
+        return inputField2.getText();
     }
     @FXML
     public String fieldGetter3() {
-        String Name = inputField3.getText();
-        return Name;
+        return inputField3.getText();
     }
 
     public void pruefen() {
-        //chosenDokStr = "C:\\Users\\gaeph\\Documents\\Intellijinputs\\" +
                 chosenDokStr = PathMap.get("InPath").toString()+DokChoice.getValue();
                 System.out.println(chosenDokStr);
             try {
@@ -177,6 +175,7 @@ public class MainController {
             e.printStackTrace();
         }
         PropController propControl = fxmlLoader.getController();
+
 
     }
 }
