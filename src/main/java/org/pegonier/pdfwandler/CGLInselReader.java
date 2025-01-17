@@ -14,7 +14,6 @@ public class CGLInselReader {
                 if (s.contains("Geb:")) {
                     GebDatum = s.substring(4, 15);
                     GebDatum = GebDatum.trim();
-
                 }
             }
             return GebDatum;

@@ -36,11 +36,12 @@ public class MainController {
     @FXML
     private ChoiceBox <String>DokChoice;
     public static HashMap<Object, Object> PathMap;
+    public static String currentDir ="";
     @FXML
     private void initialize() {
-        File f = new File("C:/Users/gaeph/Documents/Intellijinputs");
+        //File f = new File("C:/Users/gaeph/Documents/Intellijinputs");
         Properties props = new Properties();
-        String currentDir = System.getProperty("user.dir");
+        currentDir = System.getProperty("user.home");
         currentDir = currentDir.replace("\\","/");
         //currentDir = currentDir.replace("/PDFWandler","");
         currentDir = currentDir+"/PDFWandler.properties";
@@ -50,7 +51,7 @@ public class MainController {
 
             PathMap = new HashMap<>(props);
 
-            //File f = new File(String.valueOf(PathMap.get("InPath")));
+            File f = new File(String.valueOf(PathMap.get("InPath")));
             CheckInFolder doks = new CheckInFolder();
             String [] dokList = doks.listDir(f);
             ObservableList<String> List = DokChoice.getItems();
@@ -60,18 +61,6 @@ public class MainController {
             e.printStackTrace();
             welcomeText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
         }
-    }
-    @FXML
-    public String fieldGetter() {
-        return inputField.getText();
-    }
-    @FXML
-    public String fieldGetter2() {
-        return inputField2.getText();
-    }
-    @FXML
-    public String fieldGetter3() {
-        return inputField3.getText();
     }
 
     public void pruefen() {
@@ -113,7 +102,7 @@ public class MainController {
     }
     @FXML
     public void ANRsetzen(ActionEvent event) {
-        String Pid = fieldGetter();
+        String Pid = inputField.getText();
         dokHashmap.put("Auftragsnummer",Pid);
         String dokType=String.valueOf(dokHashmap);
         dokType=dokType.replace("}", "");
@@ -123,7 +112,7 @@ public class MainController {
     }
     @FXML
     public void PIDsetzen(ActionEvent event ) {
-        String Pid = fieldGetter2();
+        String Pid = inputField2.getText();
         dokHashmap.put("PID",Pid);
         String dokType=String.valueOf(dokHashmap);
         dokType=dokType.replace("}", "");
@@ -133,7 +122,7 @@ public class MainController {
     }
     @FXML
     public void Name(ActionEvent event) {
-        String Name= fieldGetter3();
+        String Name= inputField3.getText();
         dokHashmap.put("Name",Name);
         String dokType=String.valueOf(dokHashmap);
         dokType=dokType.replace("}", "");
@@ -161,6 +150,7 @@ public class MainController {
         dokType=dokType.replace(",","\n");
         welcomeText.setText(dokType);
     }
+    private Stage newWindow;
 
     public void Properties(ActionEvent event) {
         FXMLLoader fxmlLoader = null;
@@ -171,10 +161,13 @@ public class MainController {
             newWindow.setTitle("Einstellungen");
             newWindow.setScene(new Scene(root));
             newWindow.show();
+
+            PropController propController = fxmlLoader.getController();
+            propController.setStage(newWindow);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        PropController propControl = fxmlLoader.getController();
+        //PropController.initialize();
 
 
     }
