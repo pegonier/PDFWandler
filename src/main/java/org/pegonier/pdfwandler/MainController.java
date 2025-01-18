@@ -8,11 +8,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
@@ -22,7 +24,7 @@ public class MainController {
     String chosenDokStr = "kein Dokument gewählt";
     HashMap<String, String> dokHashmap;
     @FXML
-    Label welcomeText;
+    Label currentText;
     @FXML
     private TextField inputField;
     @FXML
@@ -34,9 +36,13 @@ public class MainController {
     @FXML
     private TextField inputField5;
     @FXML
+    public TextField log;
+    @FXML
     private ChoiceBox <String>DokChoice;
     public static HashMap<Object, Object> PathMap;
     public static String currentDir ="";
+    public static String currentLogDir;
+    public static StringBuilder logfile = new StringBuilder();
     @FXML
     private void initialize() {
         //File f = new File("C:/Users/gaeph/Documents/Intellijinputs");
@@ -44,9 +50,10 @@ public class MainController {
         currentDir = System.getProperty("user.home");
         currentDir = currentDir.replace("\\","/");
         //currentDir = currentDir.replace("/PDFWandler","");
-        currentDir = currentDir+"/PDFWandler.properties";
+        String currentpropDir = currentDir+"/PDFWandler.properties";
+        currentLogDir = currentDir+"/PDFWandler.log";
         System.out.println(currentDir);
-        try (FileInputStream fis = new FileInputStream(currentDir)) {
+        try (FileInputStream fis = new FileInputStream(currentpropDir)) {
             props.load(fis);
 
             PathMap = new HashMap<>(props);
@@ -56,23 +63,30 @@ public class MainController {
             String [] dokList = doks.listDir(f);
             ObservableList<String> List = DokChoice.getItems();
             List.addAll(Arrays.asList(dokList));
+            logfile = logfile.append(LocalDateTime.now());
+            logfile = logfile.append("|User |");
+            logfile = logfile.append(System.getProperty("user.name"));
+            log.setText(String.valueOf(logfile));
             DokChoice.setOnAction((event) -> pruefen());
         } catch (IOException e) {
             e.printStackTrace();
-            welcomeText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
+            logfile.append(LocalDateTime.now());
+            logfile.append("|Path Error|");
+            currentText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
+            log.setText(String.valueOf(logfile));
         }
     }
 
     public void pruefen() {
-                chosenDokStr = PathMap.get("InPath").toString()+DokChoice.getValue();
-                System.out.println(chosenDokStr);
+            chosenDokStr = PathMap.get("InPath").toString()+DokChoice.getValue();
+            System.out.println("Path" + chosenDokStr);
             try {
                 dokSourceCheck dokCheck = new dokSourceCheck();
-                welcomeText.setText(dokCheck.dokSource(chosenDokStr));
+                currentText.setText(dokCheck.dokSource(chosenDokStr));
                 dokHashmap = dokCheck.dokHash;
 
             } catch (Exception e) {
-                welcomeText.setText("Bitte eine Datei wählen");
+                currentText.setText("Bitte eine Datei wählen");
             }
         }
     @FXML
@@ -82,6 +96,11 @@ public class MainController {
         try {
             HL7Parser outPars = new HL7Parser();
             outPars.pars(dokHashmap, Path);
+            logfile = logfile.append(LocalDateTime.now());
+            logfile = logfile.append("|parsed: |");
+            logfile = logfile.append(chosenDokStr);
+            textSaver.SaveTxT(logfile.toString(),currentLogDir);
+
         }
         catch (Exception e) {
             System.out.println("erstellen des Dokuments fehlgeschlagen");
@@ -91,13 +110,13 @@ public class MainController {
     public void openPDF(String Path) {
         try {
             dokSourceCheck dokCheck = new dokSourceCheck();
-            welcomeText.setText(dokCheck.dokSource(Path));
+            currentText.setText(dokCheck.dokSource(Path));
             HashMap<String, String> dokHashmap = dokCheck.dokHash;
             String Auftragsnummer = dokHashmap.get("Auftragsnummer");
             inputField.setText(Auftragsnummer);
 
         } catch (Exception e) {
-            welcomeText.setText("Bitte eine Datei wählen");
+            currentText.setText("Bitte eine Datei wählen");
         }
     }
     @FXML
@@ -108,7 +127,7 @@ public class MainController {
         dokType=dokType.replace("}", "");
         dokType=dokType.replace("{", " ");
         dokType=dokType.replace(",","\n");
-        welcomeText.setText(dokType);
+        currentText.setText(dokType);
     }
     @FXML
     public void PIDsetzen(ActionEvent event ) {
@@ -118,7 +137,7 @@ public class MainController {
         dokType=dokType.replace("}", "");
         dokType=dokType.replace("{", " ");
         dokType=dokType.replace(",","\n");
-        welcomeText.setText(dokType);
+        currentText.setText(dokType);
     }
     @FXML
     public void Name(ActionEvent event) {
@@ -128,7 +147,7 @@ public class MainController {
         dokType=dokType.replace("}", "");
         dokType=dokType.replace("{", " ");
         dokType=dokType.replace(",","\n");
-        welcomeText.setText(dokType);
+        currentText.setText(dokType);
     }
     @FXML
     public void Geburtsdatum(ActionEvent event) {
@@ -138,7 +157,7 @@ public class MainController {
         dokType=dokType.replace("}", "");
         dokType=dokType.replace("{", " ");
         dokType=dokType.replace(",","\n");
-        welcomeText.setText(dokType);
+        currentText.setText(dokType);
     }
     @FXML
     public void Gender(ActionEvent event) {
@@ -148,9 +167,8 @@ public class MainController {
         dokType=dokType.replace("}", "");
         dokType=dokType.replace("{", " ");
         dokType=dokType.replace(",","\n");
-        welcomeText.setText(dokType);
+        currentText.setText(dokType);
     }
-    private Stage newWindow;
 
     public void Properties(ActionEvent event) {
         FXMLLoader fxmlLoader = null;
@@ -160,15 +178,12 @@ public class MainController {
             Stage newWindow = new Stage();
             newWindow.setTitle("Einstellungen");
             newWindow.setScene(new Scene(root));
+            newWindow.initModality(Modality.APPLICATION_MODAL);
             newWindow.show();
-
             PropController propController = fxmlLoader.getController();
             propController.setStage(newWindow);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //PropController.initialize();
-
-
     }
 }

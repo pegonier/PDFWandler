@@ -2,7 +2,7 @@ package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
 
-public class SRKReader {
+public class SRKRHDold {
 
     public static String[] splitText(String text) {
         return text.split("\n");

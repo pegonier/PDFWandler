@@ -2,7 +2,7 @@ package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
 
-public class RHDReader {
+public class SRKRHD {
 
 
     public static String[] splitText(String text) {

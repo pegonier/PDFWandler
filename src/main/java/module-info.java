@@ -8,6 +8,7 @@ module org.pegonier.pdfwandler {
     requires itextpdf;
     requires jdk.jdi;
     requires org.apache.pdfbox;
+    requires jdk.compiler;
 
     opens org.pegonier.pdfwandler to javafx.fxml;
     exports org.pegonier.pdfwandler;

@@ -2,7 +2,7 @@ package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
 
-public class CGLInselReader {
+public class CGLBCRABL {
 
         public static String[] splitText(String text) {
             return text.split("\n");
@@ -138,7 +138,8 @@ public class CGLInselReader {
                     break;
                 }
                 else if (splitText[i].contains("Resultate")) {
-                    Result1 = splitText[i+1].substring(10);
+                    int begindex = splitText[i+1].indexOf("BL1");
+                    Result1 = splitText[i+1].substring(begindex+4);
                     Result1 = Result1.trim();
                     break;
                 }

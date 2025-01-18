@@ -10,12 +10,13 @@ public class dokSourceCheck {
 
     public String dokSource (String Path) throws IOException {
         String dokType ="";
-        pdfReader dok = new pdfReader(); String dokString = String.valueOf(dok.TextPdfOutput(Path));
-        //BOXReader dok = new BOXReader();
-        //String dokString = String.valueOf(dok.BOXReader(Path));
+        //pdfReader dok = new pdfReader(); String dokString = String.valueOf(dok.TextPdfOutput(Path));
+        BOXReader dok = new BOXReader();
+        String dokString = String.valueOf(dok.BOXReader(Path));
+
         if (dokString.contains("SRK")) {
-            dokType = String.valueOf(RHDReader.list(dokString));
-            dokHash = RHDReader.list(dokString);
+            dokType = String.valueOf(SRKRHD.list(dokString));
+            dokHash = SRKRHD.list(dokString);
             setOutHash(dokHash);
         }
         if (dokString.contains("unilabs")&dokString.contains("Infliximab")) {
@@ -23,11 +24,17 @@ public class dokSourceCheck {
             dokHash = unilabsReader.list(dokString);
             setOutHash(dokHash);
         }
-        if (dokString.contains("CGL Hämatologie ")) {
-            dokType = String.valueOf(CGLInselReader.list(dokString));
-            dokHash = CGLInselReader.list(dokString);
+        if (dokString.contains("BCR:")) {
+            dokType = String.valueOf(CGLBCRABL.list(dokString));
+            dokHash = CGLBCRABL.list(dokString);
             setOutHash(dokHash);
         }
+        if (dokString.contains("V617F")) {
+            dokType = String.valueOf(CGLJak2.list(dokString));
+            dokHash = CGLJak2.list(dokString);
+            setOutHash(dokHash);
+        }
+
         if (dokString.contains("Laboratoire")) {
             dokType = String.valueOf(AdalimumabCHUV.list(dokString));
             dokHash = AdalimumabCHUV.list(dokString);

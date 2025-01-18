@@ -11,12 +11,14 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-   <AnchorPane prefHeight="123.0" prefWidth="361.0">
+   <AnchorPane prefHeight="193.0" prefWidth="361.0">
       <children>
       <Region fx:id="spacer" prefHeight="0.0" prefWidth="350.0" />
-      <TextField fx:id="INFIELD" layoutY="33.0" prefHeight="25.0" prefWidth="256.0" promptText="Eingangspfad" />
-      <TextField fx:id="OUTFIELD" layoutY="60.0" prefHeight="25.0" prefWidth="256.0" promptText="Ausgangspfad" />
-      <Button fx:id="setzen" layoutY="85.0" onAction="#setPath" text="ändern" />
+      <TextField fx:id="InField" layoutY="33.0" prefHeight="25.0" prefWidth="256.0" promptText="Eingangspfad" />
+      <TextField fx:id="OutField" layoutY="60.0" prefHeight="25.0" prefWidth="256.0" promptText="Ausgangspfad" />
+         <TextField fx:id="HostName" layoutY="110.0" prefHeight="25.0" prefWidth="256.0" promptText="Hostname" />
+      <Button fx:id="setzen" layoutX="256.0" layoutY="136.0" onAction="#setPath" text="ändern" />
+         <TextField fx:id="Port" layoutY="136.0" prefHeight="25.0" prefWidth="60.0" promptText="Port" />
       </children>
    </AnchorPane>
     <padding>
