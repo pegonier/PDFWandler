@@ -45,27 +45,21 @@ public class MainController {
     public static StringBuilder logfile = new StringBuilder();
     @FXML
     private void initialize() {
-        //File f = new File("C:/Users/gaeph/Documents/Intellijinputs");
         Properties props = new Properties();
         currentDir = System.getProperty("user.home");
         currentDir = currentDir.replace("\\","/");
-        //currentDir = currentDir.replace("/PDFWandler","");
         String currentpropDir = currentDir+"/PDFWandler.properties";
         currentLogDir = currentDir+"/PDFWandler.log";
         System.out.println(currentDir);
-        try (FileInputStream fis = new FileInputStream(currentpropDir)) {
-            props.load(fis);
-
+        try (FileInputStream probfis = new FileInputStream(currentpropDir)) {
+            props.load(probfis);
             PathMap = new HashMap<>(props);
-
             File f = new File(String.valueOf(PathMap.get("InPath")));
             CheckInFolder doks = new CheckInFolder();
             String [] dokList = doks.listDir(f);
             ObservableList<String> List = DokChoice.getItems();
             List.addAll(Arrays.asList(dokList));
-            logfile = logfile.append(LocalDateTime.now());
-            logfile = logfile.append("|User |");
-            logfile = logfile.append(System.getProperty("user.name"));
+            logfile = logfile.append(LocalDateTime.now()).append("|User: |").append(System.getProperty("user.name")).append("\n");
             log.setText(String.valueOf(logfile));
             DokChoice.setOnAction((event) -> pruefen());
         } catch (IOException e) {
@@ -96,9 +90,7 @@ public class MainController {
         try {
             HL7Parser outPars = new HL7Parser();
             outPars.pars(dokHashmap, Path);
-            logfile = logfile.append(LocalDateTime.now());
-            logfile = logfile.append("|parsed: |");
-            logfile = logfile.append(chosenDokStr);
+            logfile = logfile.append(LocalDateTime.now()).append("|parsed: |").append(chosenDokStr).append("\n");
             textSaver.SaveTxT(logfile.toString(),currentLogDir);
 
         }
