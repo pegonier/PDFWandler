@@ -198,13 +198,13 @@ public class AdalimumabCHUV {
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Keine Geburtsdatum erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Keine Geburtsdatum erkennbar");
             list.put("Geburtsdatum","");
         }
         try {
             list.put("Auftragsnummer", getAuftragsnummer(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Keine Auftragsnummer erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Keine Auftragsnummer erkennbar");
             list.put("Auftragsnummer","");
         }
         /*try {
@@ -216,48 +216,48 @@ public class AdalimumabCHUV {
         try {
             list.put("EntnahmeDatum", getEntnahmeDatum(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Kein Entnahmedatum erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Kein Entnahmedatum erkennbar");
             list.put("EntnahmeDatum","");
         }
         try {
             list.put("EntnahmeZeit", getEntnahmeZeit(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Keine Entnahmezeit erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Keine Entnahmezeit erkennbar");
             list.put("EntnahmeZeit","");
         }
         try {
             list.put("Auftragseingangsdatum", getAuftragseingangsDatum(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Keine Auftragseingangsdatum erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Keine Auftragseingangsdatum erkennbar");
             list.put("Auftragseingangsdatum","");
         }
         try {
             list.put("AuftragseingangsZeit", getAuftragseingangsZeit(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Keine Auftragseingangszeit erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Keine Auftragseingangszeit erkennbar");
             list.put("AuftragseingangsZeit","");
         }
         try {
             list.put("Auftragsausgangsdatum", getAuftragsausgangsDatum(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Keine Auftragsausgangsdatum erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Keine Auftragsausgangsdatum erkennbar");
             list.put("Auftragsausgangsdatum","");
         }
         try {
             list.put("Auftraggeber", "Luzerner Kantonsspital Hämatologie Labor ");
         } catch (Exception e) {
-            MainController.logfile.append("Kein Auftraggeber erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Kein Auftraggeber erkennbar");
         }
         try {
             list.put("Result1", getResult1(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.append("Keine Resultate erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
             list.put("Result1","");
         }
         try {
             list.put("Institution", "CHUV Laboratoire de diagnostic Service d'immunologie");
         } catch (Exception e) {
-            MainController.logfile.append("Kein Sender erkennbar");
+            MainController.logfile.put("AdalimumabCHUV","Kein Sender erkennbar");
         }
         return list;
     }

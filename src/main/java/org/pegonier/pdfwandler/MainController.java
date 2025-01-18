@@ -10,7 +10,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -42,30 +41,33 @@ public class MainController {
     public static HashMap<Object, Object> PathMap;
     public static String currentDir ="";
     public static String currentLogDir;
-    public static StringBuilder logfile = new StringBuilder();
+    public static HashMap logfile;
     @FXML
     private void initialize() {
         Properties props = new Properties();
+        Properties logs = new Properties();
         currentDir = System.getProperty("user.home");
         currentDir = currentDir.replace("\\","/");
         String currentpropDir = currentDir+"/PDFWandler.properties";
         currentLogDir = currentDir+"/PDFWandler.log";
         System.out.println(currentDir);
-        try (FileInputStream probfis = new FileInputStream(currentpropDir)) {
+        try (FileInputStream probfis = new FileInputStream(currentpropDir);
+             FileInputStream logfis = new FileInputStream(currentLogDir)) {
             props.load(probfis);
+            logs.load(logfis);
             PathMap = new HashMap<>(props);
+            logfile = new HashMap(logs);
             File f = new File(String.valueOf(PathMap.get("InPath")));
             CheckInFolder doks = new CheckInFolder();
             String [] dokList = doks.listDir(f);
             ObservableList<String> List = DokChoice.getItems();
             List.addAll(Arrays.asList(dokList));
-            logfile = logfile.append(LocalDateTime.now()).append("|User: |").append(System.getProperty("user.name")).append("\n");
+            logfile.put(LocalDateTime.now(), System.getProperty("user.name"));
             log.setText(String.valueOf(logfile));
             DokChoice.setOnAction((event) -> pruefen());
         } catch (IOException e) {
             e.printStackTrace();
-            logfile.append(LocalDateTime.now());
-            logfile.append("|Path Error|");
+            logfile.put(LocalDateTime.now(), " Path Error");
             currentText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
             log.setText(String.valueOf(logfile));
         }
@@ -90,7 +92,8 @@ public class MainController {
         try {
             HL7Parser outPars = new HL7Parser();
             outPars.pars(dokHashmap, Path);
-            logfile = logfile.append(LocalDateTime.now()).append("|parsed: |").append(chosenDokStr).append("\n");
+            String dest = "Parsed: "+chosenDokStr;
+            logfile.put(LocalDateTime.now(), dest);
             textSaver.SaveTxT(logfile.toString(),currentLogDir);
 
         }
