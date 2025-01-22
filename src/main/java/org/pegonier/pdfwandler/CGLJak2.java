@@ -161,6 +161,20 @@ public class CGLJak2 {
         }
         return Result1;
     }
+    public static String getBefund(String[] splitText) {
+        String Befund = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("V617F")& !splitText[i].contains("Endresultat")){
+                for (int j = i+2; j < splitText.length; j++)
+                    if (!splitText[j].contains("Technisch")||!splitText[j].contains("Freigabe")) {
+                        Befund = Befund+" "+(splitText[j]);
+                        Befund = Befund.trim();
+                    }
+                    else if (splitText[j].contains("Technisch")||splitText[j].contains("Freigabe")) break;
+            }
+        }
+        return Befund;
+    }
     public static String getResult2(String[] splitText) {
         String Result2 = "";
         for (int i = 0; i < splitText.length; i++) {
@@ -171,12 +185,25 @@ public class CGLJak2 {
             }
             else if (splitText[i].contains("Resultate")) {
                 int begindex = splitText[i+1].indexOf("617F:");
-                Result2 = splitText[i+1].substring(begindex+5);
+                Result2 = splitText[i+1].substring(begindex+10);
                 Result2 = Result2.trim();
                 break;
             }
         }
         return Result2;
+    }
+    public static String getBefunder(String[] splitText) {
+        String Befunder = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("visiert")) {
+                int begindex = splitText[i].indexOf("durch");
+                int endindex = splitText[i].length();
+                String Date = splitText[i].substring(endindex-11,endindex);
+                Befunder = splitText[i].substring(begindex+5).replace("am","").replace(Date ,"");
+                Befunder = Befunder.trim();
+            }
+        }
+        return Befunder;
     }
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
@@ -241,6 +268,12 @@ public class CGLJak2 {
             list.put("Result1","");
         }
         try {
+            list.put("Befund", getBefund(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Keine Resultate erkennbar");
+            list.put("Befund","");
+        }
+        try {
             list.put("Institution", "Hämatologie CGL Insel");
         } catch (Exception e) {
             System.out.println("Kein Sender erkennbar");
@@ -256,6 +289,12 @@ public class CGLJak2 {
         } catch (Exception e) {
             System.out.println("Kein Sender erkennbar");
             list.put("Geschlecht","");
+        }
+        try {
+            list.put("Befunder", getBefunder(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("Befunder","Kein Befunder erkennbar");
+            list.put("Befunder","");
         }
         return list;
     }

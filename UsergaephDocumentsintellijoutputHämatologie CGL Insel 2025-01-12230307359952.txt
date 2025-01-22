@@ -1,5 +1,0 @@
-MSH|^~\&||Hämatologie CGL Insel||Luzerner Kantonsspital Hämatologie Labor |2025-01-122303||ORU^R01|2025-01-12230307359952|T|2.5||||||8859/1
-PID|1||760454020^^^Luzerner Kantonsspital Hämatologie Labor ||Randier^ Felix Johannes||17.102006,||M
-ORC|RE|naler Hemizentralvenenverschluss links, ED am 23.10.2024 unklarer Ätiologie. Leichte Eosinophilie und Basophilie. ANR:|||CM
-OBR|1|naler Hemizentralvenenverschluss links, ED am 23.10.2024 unklarer Ätiologie. Leichte Eosinophilie und Basophilie. ANR:||||202412151122|||lab|202412151122|||routine
-OBX|1|NM||1|: negativ||||||F

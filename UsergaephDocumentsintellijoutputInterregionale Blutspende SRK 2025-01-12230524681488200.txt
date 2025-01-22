@@ -1,5 +1,0 @@
-MSH|^~\&||Interregionale Blutspende SRK||Spital Nidwalden AG Labor|2025-01-122305||ORU^R01|2025-01-12230524681488200|T|2.5||||||8859/1
-PID|1||null^^^Spital Nidwalden AG Labor||null||Wochen (f||null
-ORC|RE|null|||CM
-OBR|1|null||||202412151122|||lab|202412151122|||routine
-OBX|1|NM||1|nicht nachweisbar||||||F

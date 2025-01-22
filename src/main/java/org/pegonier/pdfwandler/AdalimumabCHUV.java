@@ -194,6 +194,9 @@ public class AdalimumabCHUV {
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
         System.out.println("New"+"\n");
+        list.put("Name","");
+        list.put("PID","");
+        list.put("Geschlecht","");
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {

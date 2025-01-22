@@ -17,7 +17,7 @@ public class InfliximabCHUV {
         return text.split("\n");
     }
 
-    /*public static String getGebDatum(String[] splitText) {
+    public static String getGebDatum(String[] splitText) {
         String GebDatum="";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("concerné")) {
@@ -27,12 +27,12 @@ public class InfliximabCHUV {
                 }
                 else if (countNumbers(splitText[i-1]) == 8) {
                     GebDatum = splitText[i-1];
-                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
+                    GebDatum = GebDatum.replace("Au","").replace("concerné","").replace("médecin","").replace("M","");
                     GebDatum = splitText[i-1];
                 }
                 else if (countNumbers(splitText[i]) == 8) {
                     GebDatum = splitText[i];
-                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
+                    GebDatum = GebDatum.replace("Au","").replace("médecin","").replace("concerné","").replace("M","");
                     GebDatum = splitText[i];
                 }
                 break;
@@ -42,7 +42,7 @@ public class InfliximabCHUV {
         GebDatum = GebDatum.trim();
         return GebDatum;
 
-    }*/
+    }
     public static String getPID(String[] splitText) {
         String PID = "";
         for (String s : splitText) {
@@ -52,6 +52,17 @@ public class InfliximabCHUV {
             }
         }
         return PID;
+    }
+    public static String getBefunder(String[] splitText) {
+        String Befunder = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("19-610")) {
+                Befunder = splitText[i-1].replace("%","").replace("x","").replace("\\","");
+                Befunder = Befunder.trim();
+                break;
+            }
+        }
+        return Befunder;
     }
     public static String getAuftragsnummer(String[] splitText) {
         String nummer = "";
@@ -245,12 +256,13 @@ public class InfliximabCHUV {
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
         System.out.println("New"+"\n");
-        /*try {
+        list.put("PID","");
+        try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {
             MainController.logfile.put("AdalimumabCHUV","Keine Geburtsdatum erkennbar");
             list.put("Geburtsdatum","");
-        }*/
+        }
         try {
             list.put("Auftragsnummer", getAuftragsnummer(splitText(text)));
         } catch (Exception e) {
@@ -346,6 +358,13 @@ public class InfliximabCHUV {
         } catch (Exception e) {
             MainController.logfile.put("InfliximabCHUV","Kein Sender erkennbar");
         }
+        try {
+            list.put("Befunder", getBefunder(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("Befunder","Kein Befunder erkennbar");
+            list.put("Befunder","");
+        }
         return list;
     }
 }
+

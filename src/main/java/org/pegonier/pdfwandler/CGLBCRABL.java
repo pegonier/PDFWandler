@@ -157,6 +157,19 @@ public class CGLBCRABL {
         }
         return Result1;
     }
+    public static String getBefunder(String[] splitText) {
+        String Befunder = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("visiert")) {
+                int begindex = splitText[i].indexOf("durch");
+                int endindex = splitText[i].length();
+                String Date = splitText[i].substring(endindex-11,endindex);
+                Befunder = splitText[i].substring(begindex+5).replace("am","").replace(Date ,"");
+                Befunder = Befunder.trim();
+            }
+        }
+        return Befunder;
+    }
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
 
@@ -235,6 +248,12 @@ public class CGLBCRABL {
         } catch (Exception e) {
             System.out.println("Kein Sender erkennbar");
             list.put("Geschlecht","");
+        }
+        try {
+            list.put("Befunder", getBefunder(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("Befunder","Kein Befunder erkennbar");
+            list.put("Befunder","");
         }
         return list;
     }
