@@ -5,9 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.File;
@@ -34,43 +32,56 @@ public class MainController {
     private TextField inputField4;
     @FXML
     private TextField inputField5;
+    public static TextArea logArea= new TextArea();
     @FXML
-    public TextField log;
+    public ScrollPane log = new ScrollPane(logArea);
     @FXML
     private ChoiceBox <String>DokChoice;
     public static HashMap<Object, Object> PathMap;
     public static String currentDir ="";
     public static String currentLogDir;
-    public static HashMap logfile;
+    public static HashMap<Object, Object> logfile;
+    String currentpropDir ="";
     @FXML
-    private void initialize() {
+    private void initialize() throws IOException {
         Properties props = new Properties();
         Properties logs = new Properties();
-        currentDir = System.getProperty("user.home");
-        currentDir = currentDir.replace("\\","/");
-        String currentpropDir = currentDir+"/PDFWandler.properties";
-        currentLogDir = currentDir+"/PDFWandler.log";
-        System.out.println(currentDir);
+        try {
+            currentDir = System.getProperty("user.home");
+            currentDir = currentDir.replace("\\","/");
+            currentpropDir = currentDir+"/PDFWandler.properties";
+            currentLogDir = currentDir+"/PDFWandler.log";
+            System.out.println(currentDir);}
+        catch (Exception e) {currentText.setText("bitte Eingangspfad setzten");}
         try (FileInputStream probfis = new FileInputStream(currentpropDir);
              FileInputStream logfis = new FileInputStream(currentLogDir)) {
             props.load(probfis);
             logs.load(logfis);
             PathMap = new HashMap<>(props);
-            logfile = new HashMap(logs);
+            logfile = new HashMap<>(logs);
             File f = new File(String.valueOf(PathMap.get("InPath")));
             CheckInFolder doks = new CheckInFolder();
-            String [] dokList = doks.listDir(f);
-            ObservableList<String> List = DokChoice.getItems();
-            List.addAll(Arrays.asList(dokList));
+            String[] dokList = doks.listDir(f);
+            if (dokList != null) {
+                ObservableList<String> list = DokChoice.getItems();
+                if (list != null) {
+                    list.addAll(Arrays.asList(dokList));
+                } else {
+                    currentText.setText("Fehler beim Laden der Dokumentenliste");
+                }
+            } else {
+                currentText.setText("Keine Dokumente im Eingangspfad gefunden");
+            }
             logfile.put(LocalDateTime.now(), System.getProperty("user.name"));
-            log.setText(String.valueOf(logfile));
+            logArea.appendText(logfile+"\n");
             DokChoice.setOnAction((event) -> pruefen());
         } catch (IOException e) {
             e.printStackTrace();
             logfile.put(LocalDateTime.now(), " Path Error");
             currentText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
-            log.setText(String.valueOf(logfile));
+            logArea.appendText(logfile+"\n");
         }
+        LogSaver.saveLog(logfile,currentLogDir);
     }
 
     public void pruefen() {
@@ -93,13 +104,16 @@ public class MainController {
             HL7Parser outPars = new HL7Parser();
             outPars.pars(dokHashmap, Path);
             String dest = "Parsed: "+chosenDokStr;
-            logfile.put(LocalDateTime.now(), dest);
-            textSaver.SaveTxT(logfile.toString(),currentLogDir);
+            logfile.put(LocalDateTime.now(), System.getProperty(dest));
+            logArea.appendText(logfile+"\n");
 
         }
         catch (Exception e) {
             System.out.println("erstellen des Dokuments fehlgeschlagen");
+            logfile.put(LocalDateTime.now(), System.getProperty("erstellen des Dokuments fehlgeschlagen "+chosenDokStr));
+            logArea.appendText(logfile+"\n");
         }
+        LogSaver.saveLog(logfile,currentLogDir);
     }
 
     public void openPDF(String Path) {

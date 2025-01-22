@@ -20,28 +20,6 @@ public class SRKRHD {
         return GebDatum;
 
     }
-    /*public String getPID(String[] splitText) {
-        for (String s : splitText) {
-            if (s.contains("PID") || s.contains("P I D")) {
-                int begindex = s.indexOf("D");
-                PID = s.substring(begindex + 3, begindex + 13);
-                PID = PID.trim();
-            }
-        }
-        return PID;
-    }
-    public static String getAuftragsnummer(String[] splitText) {
-        String nummer = "";
-        for (String s : splitText) {
-            if (s.contains("ANR") || s.contains("AN R")) {
-                nummer = s.substring(4);
-                nummer = nummer.trim();
-                break;
-            }
-        }
-        return nummer;
-    }*/
-
     public static String getEntnahmeDatum(String[] splitText) {
         String EntnahmeDatum = "";
         for (int i = 0; i < splitText.length; i++) {
@@ -53,18 +31,6 @@ public class SRKRHD {
         }
         return EntnahmeDatum;
     }
-
-    /*public static String getEntnahmeZeit(String[] splitText) {
-        String Entnahmezeit = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Entnahme")) {
-                Entnahmezeit = splitText[i+1].substring(24, 29);
-                Entnahmezeit = Entnahmezeit.trim();
-                break;
-            }
-        }
-        return Entnahmezeit;
-    }*/
     public static String getAuftragseingangsDatum(String[] splitText) {
         String AuftragseingangsDatum = "";
         for (int i = 0; i < splitText.length; i++) {
@@ -78,41 +44,15 @@ public class SRKRHD {
         }
         return AuftragseingangsDatum;
     }
-    /*public static String getAuftragseingangsZeit(String[] splitText) {
-        String AuftragseingangsZeit = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Entnahme")) {
-                AuftragseingangsZeit = splitText[i+1].substring(40,46);
-                AuftragseingangsZeit = AuftragseingangsZeit.trim();
-                break;
-            }
-        }
-        return AuftragseingangsZeit;
-    }*/
 
     public static String getAuftragsausgangsDatum(String[] splitText) {
         String AuftragsausgangsDatum = "";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("Druckdatum:")) {
                 int begindex = splitText[i].indexOf("tum:");
-                if (!splitText[i].substring(begindex+4,begindex+5).contains(" ")) {
-                    AuftragsausgangsDatum = splitText[i].substring(begindex + 4, begindex + 16);
-                    AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
-                } else {
-                    AuftragsausgangsDatum = splitText[i+1];
-                    AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
-                }
-            }
-        }
-        return AuftragsausgangsDatum;
-    }
-    public static String getAuftragsausgangsDatum2(String[] splitText) {
-        String AuftragsausgangsDatum = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Druckdatum:")) {
-                AuftragsausgangsDatum = splitText[i+1];
-                AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
-                break;
+                AuftragsausgangsDatum = splitText[i].substring(begindex + 4, begindex + 16);
+                AuftragsausgangsDatum = AuftragsausgangsDatum.replace(",",".").trim();
+
             }
         }
         return AuftragsausgangsDatum;
@@ -138,18 +78,6 @@ public class SRKRHD {
             System.out.println("Keine Geburtsdatum erkennbar");
             list.put("Geburtsdatum","");
         }
-        /*String Auftragsnummer = MainController.fieldGetter2();
-        try {
-            list.put("Auftragsnummer", Auftragsnummer);
-        } catch (Exception e) {
-            System.out.println("Keine Auftragsnummer erkennbar");
-        }
-        String PID = MainController.fieldGetter();
-        try {
-            list.put("PID", PID);
-        } catch (Exception e) {
-            System.out.println("Keine PID erkennbar");
-        }*/
         try {
             list.put("EntnahmeDatum", getEntnahmeDatum(splitText(text)));
         } catch (Exception e) {

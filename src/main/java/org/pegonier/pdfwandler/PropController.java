@@ -4,26 +4,31 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PushbackInputStream;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Properties;
 
 public class PropController {
-    //HashMap<String, String> Paths = new HashMap<>();
+    HashMap<String, String> Paths = new HashMap<>();
 
     static String thisDir = MainController.currentDir;
-
+    public TextField HostName;
+    public TextField Port;
+    public Button Socket;
     @FXML
     private TextField InField;
     @FXML
     private TextField OutField;
     private Stage newWindow;
+    public static boolean sockPath;
 
     public void closeWindow() {
         if (newWindow != null) {
@@ -36,29 +41,47 @@ public class PropController {
 
         try {
             InField.setText((String) MainController.PathMap.get("InPath"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //throw new RuntimeException(e);
             InField.setText("Eingangspfad eingeben");
         }
         try {
             OutField.setText((String) MainController.PathMap.get("OutPath"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             //throw new RuntimeException(e);
             OutField.setText("Eingangspfad eingeben");
+        }try {
+            HostName.setText((String) MainController.PathMap.get("HostName"));
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            HostName.setText("Eingangspfad eingeben");
+        }
+        try {
+            Port.setText((String) MainController.PathMap.get("Port"));
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            Port.setText("Eingangspfad eingeben");
+        }
+        System.out.println(MainController.PathMap.get("Socket"));
+        if ((MainController.PathMap.get("Socket") != null)) {
+            Socket.setText((String) MainController.PathMap.get("Socket"));
+        } else {
+            Socket.setText("Socket");
         }
     }
 
     public void setPath(ActionEvent event) throws FileNotFoundException {
         MainController.PathMap.put("InPath", InField.getText());
         MainController.PathMap.put("OutPath", OutField.getText());
-        //String Dir = "C:/Users/gaeph/IdeaProjects/PDFWandler.properties";
-        System.out.println(thisDir);
+        MainController.PathMap.put("HostName", HostName.getText());
+        MainController.PathMap.put("Port", Port.getText());
+        MainController.PathMap.put("Socket", Socket.getText());
+        String Dir = thisDir+"/PDFWandler.properties";
         Properties props = new Properties();
         props.putAll(MainController.PathMap);
+        System.out.println(MainController.PathMap);
         try {
-            props.store(new FileOutputStream(thisDir), null);
+            props.store(new FileOutputStream(Dir), null);
             closeWindow();
             MainController.logfile.put(LocalDateTime.now(), props);
         } catch (IOException e) {
@@ -68,5 +91,19 @@ public class PropController {
 
     public void setStage(Stage newWindow) {
         this.newWindow = newWindow;
+    }
+
+    public boolean setSocket() {
+        if (Socket.getText().equals("Socket")) {
+            Socket.setText("Data Path");
+            sockPath = false;
+        } else if (Socket.getText().equals("Data Path")) {
+            Socket.setText("Socket");
+            sockPath = true;
+        }
+        return sockPath;
+    }
+    public boolean getSocket() {
+        return sockPath;
     }
 }

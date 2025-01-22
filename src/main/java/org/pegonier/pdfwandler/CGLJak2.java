@@ -88,7 +88,7 @@ public class CGLJak2 {
             if (splitText[i].contains("Entnahme")) {
                 AuftragseingangsDatum = splitText[i+1].substring(30, 40);
                 System.out.println(splitText[i+1]);
-                AuftragseingangsDatum = AuftragseingangsDatum.trim();
+                AuftragseingangsDatum = AuftragseingangsDatum.replace(",",".").trim();
                 break;
             }
         }
@@ -155,11 +155,28 @@ public class CGLJak2 {
             else if (splitText[i].contains("Resultate")) {
                 int begindex = splitText[i+1].indexOf("617F:");
                 Result1 = splitText[i+1].substring(begindex+5);
-                Result1 = Result1.trim();
+                Result1 = Result1.replace(",",".").trim();
                 break;
             }
         }
         return Result1;
+    }
+    public static String getResult2(String[] splitText) {
+        String Result2 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("ABL1: positiv")) {
+                Result2 = splitText[i].substring(10);
+                Result2 = Result2.trim();
+                break;
+            }
+            else if (splitText[i].contains("Resultate")) {
+                int begindex = splitText[i+1].indexOf("617F:");
+                Result2 = splitText[i+1].substring(begindex+5);
+                Result2 = Result2.trim();
+                break;
+            }
+        }
+        return Result2;
     }
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();

@@ -22,18 +22,18 @@ public class AdalimumabCHUV {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("concerné")) {
                 if (countNumbers(splitText[i+1]) == 8) {
-                    GebDatum = GebDatum.replace("(","");
-                    GebDatum = GebDatum.replace(")","");
-                    GebDatum = GebDatum.replace("F","");
-                    GebDatum = GebDatum.replace("M","");
+                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
                     GebDatum = splitText[i+1];
                 }
                 else if (countNumbers(splitText[i-1]) == 8) {
                     GebDatum = splitText[i-1];
-                    GebDatum = GebDatum.replace("(","");
-                    GebDatum = GebDatum.replace(")","");
-                    GebDatum = GebDatum.replace("F","");
-                    GebDatum = GebDatum.replace("M","");
+                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
+                    GebDatum = splitText[i-1];
+                }
+                else if (countNumbers(splitText[i]) == 8) {
+                    GebDatum = splitText[i];
+                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
+                    GebDatum = splitText[i];
                 }
                 break;
             }
@@ -171,18 +171,17 @@ public class AdalimumabCHUV {
     public static String getResult1(String[] splitText) {
         String Result1 = "";
         for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Adalimumab")) {
+            if (splitText[i].contains("Adalimumab")&splitText[i].contains("pg/ml")) {
                 int begindex = splitText[i].indexOf("mab");
                 Result1 = splitText[i].substring(begindex+4,begindex+9);
                 Result1 = Result1.replace("(","");
                 Result1 = Result1.replace(")","");
                 Result1 = Result1.replace("p","");
                 Result1 = Result1.trim();
-                Result1 = Result1.trim();
                 break;
             }
-            else if (splitText[i].contains("Resultate")) {
-                Result1 = splitText[i+1].substring(10);
+            else if (splitText[i].contains("g/ml")) {
+                Result1 = splitText[i].substring(0,5);
                 Result1 = Result1.replace("(","");
                 Result1 = Result1.replace(")","");
                 Result1 = Result1.replace("p","");
@@ -207,12 +206,6 @@ public class AdalimumabCHUV {
             MainController.logfile.put("AdalimumabCHUV","Keine Auftragsnummer erkennbar");
             list.put("Auftragsnummer","");
         }
-        /*try {
-            list.put("PID", getPID(splitText(text)));
-        } catch (Exception e) {
-            System.out.println("Keine PID erkennbar");
-            list.put("PID","");
-        }*/
         try {
             list.put("EntnahmeDatum", getEntnahmeDatum(splitText(text)));
         } catch (Exception e) {

@@ -1,0 +1,5 @@
+MSH|^~\&||CHUV Laboratoire de diagnostic Service d'immunologie||Luzerner Kantonsspital Hämatologie Labor |2025-01-122302||ORU^R01|2025-01-12230228292356200|T|2.5||||||8859/1
+PID|1||null^^^Luzerner Kantonsspital Hämatologie Labor ||null||03.02.1968||null
+ORC|RE|23833308|||CM
+OBR|1|23833308||||202412151122|||lab|202412151122|||routine
+OBX|1|NM||1|15.||||||F

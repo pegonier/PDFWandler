@@ -1,0 +1,6 @@
+<component name="ArtifactManager">
+  <artifact type="jlink" name="jlinkruntime">
+    <output-path>$USER_HOME$/Desktop/Starter</output-path>
+    <root id="root" />
+  </artifact>
+</component>

@@ -6,15 +6,18 @@
       <option name="ignoredModules">
         <list>
           <option value="PDFWandler" />
+          <option value="PDFWandler" />
         </list>
       </option>
       <option name="ignoredPackages">
         <list>
           <option value="org.codehaus.plexus:plexus-utils:2.0.4" />
+          <option value="org.bouncycastle:bcprov-jdk16:1.46" />
         </list>
       </option>
       <option name="ignoredReasons">
         <list>
+          <option value="Not exploitable" />
           <option value="Not exploitable" />
         </list>
       </option>

@@ -9,6 +9,8 @@ module org.pegonier.pdfwandler {
     requires jdk.jdi;
     requires org.apache.pdfbox;
     requires jdk.compiler;
+    requires hapi.base;
+    requires java.desktop;
 
     opens org.pegonier.pdfwandler to javafx.fxml;
     exports org.pegonier.pdfwandler;
