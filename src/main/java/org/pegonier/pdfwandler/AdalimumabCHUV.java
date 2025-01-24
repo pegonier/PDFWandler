@@ -16,30 +16,41 @@ public class AdalimumabCHUV {
     public static String[] splitText(String text) {
         return text.split("\n");
     }
+    public static String getBefundend(String[] splitText) {
+        String Befunder = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("19-610")) {
+                Befunder = splitText[i-1].replace("%","").replace("x","").replace("\\","");
+                Befunder = Befunder.trim();
+                break;
+            }
+        }
+        return Befunder;
+    }
 
     public static String getGebDatum(String[] splitText) {
         String GebDatum="";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("concerné")) {
                 if (countNumbers(splitText[i+1]) == 8) {
-                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
                     GebDatum = splitText[i+1];
+                    GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
+                    GebDatum = GebDatum.substring(0,11);
                 }
                 else if (countNumbers(splitText[i-1]) == 8) {
                     GebDatum = splitText[i-1];
                     GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
-                    GebDatum = splitText[i-1];
+                    GebDatum = GebDatum.substring(0,11);
                 }
                 else if (countNumbers(splitText[i]) == 8) {
                     GebDatum = splitText[i];
                     GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
-                    GebDatum = splitText[i];
+                    GebDatum = GebDatum.substring(0,11);
                 }
                 break;
             }
         }
-
-        GebDatum = GebDatum.trim();
+        GebDatum = GebDatum.replace(".","").replace(",","").trim();;
         return GebDatum;
 
     }
@@ -69,20 +80,15 @@ public class AdalimumabCHUV {
     public static String getEntnahmeDatum(String[] splitText) {
         String EntnahmeDatum = "";
         for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("élevé")) {
+            if (splitText[i].contains("levé")) {
                 int begindex = splitText[i].indexOf("vé");
-                if (countNumbers(splitText[i]) == 10) {
-                    EntnahmeDatum = splitText[i].substring(begindex+6,begindex+14);
-                }
-                else if (countNumbers(splitText[i+1]) == 10) {
-                    EntnahmeDatum = splitText[i+1];
-                    EntnahmeDatum = EntnahmeDatum.replace("le","");
-                    EntnahmeDatum = EntnahmeDatum.substring(0,9);
-            }
+                EntnahmeDatum = splitText[i].substring(begindex+6,begindex+14);
+                EntnahmeDatum = EntnahmeDatum.replace("le","");
+               // EntnahmeDatum = EntnahmeDatum.substring(0,9);
                 break;
             }
         }
-        EntnahmeDatum = EntnahmeDatum.trim();
+        EntnahmeDatum = EntnahmeDatum.replace(".","").replace(",","").trim();;
         return EntnahmeDatum;
     }
 
@@ -91,16 +97,11 @@ public class AdalimumabCHUV {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("élevé")) {
                 int begindex = splitText[i].indexOf("vé");
-                if (countNumbers(splitText[i]) == 10) {
-                    Entnahmezeit = splitText[i].substring(begindex+17,begindex+23);
-                }
-                else if (countNumbers(splitText[i+1]) == 10) {
-                    Entnahmezeit = splitText[i].substring(begindex+14,begindex+20);
-                }
+                Entnahmezeit = splitText[i].substring(begindex+17,begindex+23);
                 break;
             }
         }
-        Entnahmezeit = Entnahmezeit.trim();
+        Entnahmezeit = Entnahmezeit.replace(".","").replace(",","").trim();;
         return Entnahmezeit;
     }
     public static String getAuftragseingangsDatum(String[] splitText) {
@@ -109,7 +110,7 @@ public class AdalimumabCHUV {
             if (splitText[i].contains("Enregistré")) {
                 int begindex = splitText[i].indexOf("ré");
                 AuftragseingangsDatum = splitText[i].substring(begindex+6,begindex+14);
-                AuftragseingangsDatum = AuftragseingangsDatum.trim();
+                AuftragseingangsDatum = AuftragseingangsDatum.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -121,7 +122,7 @@ public class AdalimumabCHUV {
             if (splitText[i].contains("Enregistré")) {
                 int begindex = splitText[i].indexOf("ré");
                 AuftragseingangsZeit = splitText[i].substring(begindex+17,begindex+22);
-                AuftragseingangsZeit = AuftragseingangsZeit.trim();
+                AuftragseingangsZeit = AuftragseingangsZeit.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -144,9 +145,9 @@ public class AdalimumabCHUV {
         String AuftragsausgangsDatum = "";
         for (int i = 0; i < splitText.length; i++) {
         if (splitText[i].contains("Enregistré")) {
-            int begindex = splitText[i].indexOf("du");
-            AuftragsausgangsDatum = splitText[i].substring(begindex + 3, begindex + 11);
-            AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
+            int begindex = splitText[i].indexOf("complet du");
+            AuftragsausgangsDatum = splitText[i].substring(begindex + 10, begindex + 19);
+            AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
             break;
         }
         }
@@ -171,32 +172,125 @@ public class AdalimumabCHUV {
     public static String getResult1(String[] splitText) {
         String Result1 = "";
         for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Adalimumab")&splitText[i].contains("pg/ml")) {
+            if (splitText[i].contains("d'Adalimumab")) {
                 int begindex = splitText[i].indexOf("mab");
-                Result1 = splitText[i].substring(begindex+4,begindex+9);
-                Result1 = Result1.replace("(","");
-                Result1 = Result1.replace(")","");
-                Result1 = Result1.replace("p","");
-                Result1 = Result1.trim();
-                break;
-            }
-            else if (splitText[i].contains("g/ml")) {
-                Result1 = splitText[i].substring(0,5);
-                Result1 = Result1.replace("(","");
-                Result1 = Result1.replace(")","");
-                Result1 = Result1.replace("p","");
-                Result1 = Result1.trim();
+                Result1 = splitText[i].substring(begindex+3,begindex+9);
+                Result1 = Result1.replace("(","").replace(")","").replace("p","");
+                //Result1 = Result1.trim();
+                System.out.println("Tetx  "+splitText[i]);
                 break;
             }
         }
         return Result1;
     }
+    public static String getReference1(String[] splitText) {
+        String Reference1 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Adalimumab")) {
+                int begindex = splitText[i].indexOf("ml");
+                Reference1 = splitText[i].substring(begindex+ 3, begindex + 7);;
+                Reference1 = Reference1.replace("(","").replace(")","").replace("?", "≥");
+                Reference1 = Reference1.trim();
+                break;
+            }
+        }
+        return Reference1;
+    }
+    public static String getResult1Old(String[] splitText) {
+        String Result1Old = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("d'Adalimumab")) {
+                splitText[i] = splitText[i].replace(" ","");
+                int begindex = splitText[i].indexOf("ml");
+                Result1Old = splitText[i].substring(begindex+6,begindex+11);
+                Result1Old = Result1Old.replace("(","").replace(")","").replace("*","");
+                Result1Old = Result1Old.trim();
+                break;
+            }
+        }
+        return Result1Old;
+    }
+    public static String getResult1OldDate(String[] splitText) {
+        String Result1OldDate = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("d'Adalimumab")) {
+                int endIndex = splitText[i].length();
+                Result1OldDate = splitText[i].substring(endIndex-12,endIndex-0);
+                Result1OldDate = Result1OldDate.replace("(","").replace(")","").replace("p","");
+                Result1OldDate = Result1OldDate.replace(".","").replace(",","").trim();
+                if (countNumbers(Result1OldDate)!=6) {Result1OldDate="";}
+                break;
+            }
+        }
+        return Result1OldDate;
+    }
+    public static String getResult2(String[] splitText) {
+        String Result2 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("anti-")) {
+                int begindex = splitText[i].indexOf("mab");
+                Result2 = splitText[i].substring(begindex+4,begindex+9);
+                Result2 = Result2.replace("(","").replace(")","").replace("p","");
+                Result2 = Result2.trim();
+                break;
+            }
+        }
+        return Result2;
+    }
+    public static String getResult2Old(String[] splitText) {
+        String Result2Old = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("anti-")) {
+                int begindex = splitText[i].indexOf("ml");
+                Result2Old = splitText[i].substring(begindex+6,begindex+10);
+                Result2Old = Result2Old.replace("(","").replace(")","").replace("p","");
+                Result2Old = Result2Old.trim();
+                break;
+            }
+        }
+        return Result2Old;
+    }
+    public static String getResult2OldDate(String[] splitText) {
+        String Result2OldDate = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("anti")) {
+                int endIndex = splitText[i].length();
+                Result2OldDate = splitText[i].substring(endIndex-12,endIndex-0);
+                Result2OldDate = Result2OldDate.replace("(","").replace(")","").replace("p","");
+                Result2OldDate = Result2OldDate.replace(".","").replace(",","").trim();
+                if (countNumbers(Result2OldDate)!=6) {Result2OldDate="";}
+                break;
+            }
+        }
+        return Result2OldDate;
+    }
+    public static String getReference2(String[] splitText) {
+        String Referenz2 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("anti-")) {
+                int begindex = splitText[i].indexOf("ml");
+                Referenz2 = splitText[i].substring(begindex+ 3, begindex + 6);;
+                Referenz2 = Referenz2.replace("(","").replace(")","").replace("?", "≥");
+                Referenz2 = Referenz2.trim();
+                break;
+            }
+        }
+        return Referenz2;
+    }
+
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
-        System.out.println("New"+"\n");
         list.put("Name","");
         list.put("PID","");
         list.put("Geschlecht","");
+        list.put("Einheit1","ug/mL");
+        list.put("Einheit2","ng/mL");
+        list.put("Befund","");
+        list.put("Befundend","");
+        list.put("Result1a","");
+        list.put("LOINC1","74117-3^Adalimumab [Mass/volume] in Serum or Plasma^LN");
+        list.put("LOINC2","74116-5^Adalimumab [Mass/volume] in Serum or Plasma^LN");
+
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {
@@ -210,16 +304,16 @@ public class AdalimumabCHUV {
             list.put("Auftragsnummer","");
         }
         try {
-            list.put("EntnahmeDatum", getEntnahmeDatum(splitText(text)));
+            list.put("Entnahmedatum", getEntnahmeDatum(splitText(text)));
         } catch (Exception e) {
             MainController.logfile.put("AdalimumabCHUV","Kein Entnahmedatum erkennbar");
-            list.put("EntnahmeDatum","");
+            list.put("Entnahmedatum","");
         }
         try {
-            list.put("EntnahmeZeit", getEntnahmeZeit(splitText(text)));
+            list.put("Entnahmezeit", getEntnahmeZeit(splitText(text)));
         } catch (Exception e) {
             MainController.logfile.put("AdalimumabCHUV","Keine Entnahmezeit erkennbar");
-            list.put("EntnahmeZeit","");
+            list.put("Entnahmezeit","");
         }
         try {
             list.put("Auftragseingangsdatum", getAuftragseingangsDatum(splitText(text)));
@@ -228,10 +322,10 @@ public class AdalimumabCHUV {
             list.put("Auftragseingangsdatum","");
         }
         try {
-            list.put("AuftragseingangsZeit", getAuftragseingangsZeit(splitText(text)));
+            list.put("Auftragseingangszeit", getAuftragseingangsZeit(splitText(text)));
         } catch (Exception e) {
             MainController.logfile.put("AdalimumabCHUV","Keine Auftragseingangszeit erkennbar");
-            list.put("AuftragseingangsZeit","");
+            list.put("Auftragseingangszeit","");
         }
         try {
             list.put("Auftragsausgangsdatum", getAuftragsausgangsDatum(splitText(text)));
@@ -251,10 +345,59 @@ public class AdalimumabCHUV {
             list.put("Result1","");
         }
         try {
+            list.put("Result1Old", getResult1Old(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
+            list.put("Result1Old","");
+        }
+        try {
+            list.put("Result1OldDate", getResult1OldDate(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
+            list.put("Result1OldDate","");
+        }
+        try {
+            list.put("Reference1", getReference1(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
+            list.put("Reference1","");
+        }
+        try {
+            list.put("Result2", getResult2(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
+            list.put("Result2","");
+        }
+        try {
+            list.put("Reference2", getReference2(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
+            list.put("Reference2","");
+        }
+        try {
+            list.put("Result2Old", getResult2Old(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
+            list.put("Result2Old","");
+        }
+        try {
+            list.put("Result2OldDate", getResult2OldDate(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("AdalimumabCHUV","Keine Resultate erkennbar");
+            list.put("Result2OldDate","");
+        }
+        try {
             list.put("Institution", "CHUV Laboratoire de diagnostic Service d'immunologie");
         } catch (Exception e) {
             MainController.logfile.put("AdalimumabCHUV","Kein Sender erkennbar");
         }
+        try {
+            list.put("Befundend", getBefundend(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("Befundend","Keine befundende Person erkennbar");
+            list.put("Befundend","");
+        }
+
         return list;
     }
 }

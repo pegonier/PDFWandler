@@ -36,8 +36,8 @@ public class dokSourceCheck {
         }
 
         if (dokString.contains("Laboratoire")) {
-            dokType = String.valueOf(AdalimumabCHUV.list(dokString));
-            dokHash = AdalimumabCHUV.list(dokString);
+            dokType = String.valueOf(AdalimumabCHUV.list(dok2String));
+            dokHash = AdalimumabCHUV.list(dok2String);
             setOutHash(dokHash);
         }
         if (dokString.contains("Laboratoire")&dokString.contains("Infliximab")) {

@@ -18,6 +18,7 @@ import java.util.Properties;
 
 public class MainController {
 
+    public Button Properties;
     String chosenDokStr = "kein Dokument gewählt";
     HashMap<String, String> dokHashmap;
     @FXML
@@ -32,6 +33,7 @@ public class MainController {
     private TextField inputField4;
     @FXML
     private TextField inputField5;
+    @FXML
     public static TextArea logArea= new TextArea();
     @FXML
     public ScrollPane log = new ScrollPane(logArea);
@@ -41,6 +43,7 @@ public class MainController {
     public static String currentDir ="";
     public static String currentLogDir;
     public static HashMap<Object, Object> logfile;
+    public static String logString = "";
     String currentpropDir ="";
     @FXML
     private void initialize() throws IOException {
@@ -73,14 +76,15 @@ public class MainController {
                 currentText.setText("Keine Dokumente im Eingangspfad gefunden");
             }
             logfile.put(LocalDateTime.now(), System.getProperty("user.name"));
-            logArea.appendText(logfile+"\n");
+
             DokChoice.setOnAction((event) -> pruefen());
         } catch (IOException e) {
             e.printStackTrace();
             logfile.put(LocalDateTime.now(), " Path Error");
             currentText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
-            logArea.appendText(logfile+"\n");
         }
+        logString = logString + logfile+"\n";
+        logArea.setText(logString);
         LogSaver.saveLog(logfile,currentLogDir);
     }
 
@@ -91,6 +95,10 @@ public class MainController {
                 dokSourceCheck dokCheck = new dokSourceCheck();
                 currentText.setText(dokCheck.dokSource(chosenDokStr));
                 dokHashmap = dokCheck.dokHash;
+                logfile.put(LocalDateTime.now(),chosenDokStr);
+                logString = logString + logfile+"\n";
+                logArea.setText(logString);
+                LogSaver.saveLog(logfile,currentLogDir);
 
             } catch (Exception e) {
                 currentText.setText("Bitte eine Datei wählen");

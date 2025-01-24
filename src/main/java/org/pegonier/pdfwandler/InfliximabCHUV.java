@@ -39,7 +39,7 @@ public class InfliximabCHUV {
             }
         }
 
-        GebDatum = GebDatum.trim();
+        GebDatum = GebDatum.replace(".","").replace(",","").trim();
         return GebDatum;
 
     }
@@ -53,7 +53,7 @@ public class InfliximabCHUV {
         }
         return PID;
     }
-    public static String getBefunder(String[] splitText) {
+    public static String getBefundend(String[] splitText) {
         String Befunder = "";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("19-610")) {
@@ -85,7 +85,7 @@ public class InfliximabCHUV {
                 break;
             }
         }
-        EntnahmeDatum = EntnahmeDatum.trim();
+        EntnahmeDatum = EntnahmeDatum.replace(".","").replace(",","").trim();
         return EntnahmeDatum;
     }
 
@@ -98,7 +98,7 @@ public class InfliximabCHUV {
                 break;
             }
         }
-        Entnahmezeit = Entnahmezeit.trim();
+        Entnahmezeit = Entnahmezeit.replace(".","").replace(",","").trim();
         return Entnahmezeit;
     }
     public static String getAuftragseingangsDatum(String[] splitText) {
@@ -107,7 +107,7 @@ public class InfliximabCHUV {
             if (splitText[i].contains("Enregistré")) {
                 int begindex = splitText[i].indexOf("ré");
                 AuftragseingangsDatum = splitText[i].substring(begindex+6,begindex+14);
-                AuftragseingangsDatum = AuftragseingangsDatum.trim();
+                AuftragseingangsDatum = AuftragseingangsDatum.replace(".","").replace(",","").trim();;
                 break;
             }
         }
@@ -119,7 +119,7 @@ public class InfliximabCHUV {
             if (splitText[i].contains("Enregistré")) {
                 int begindex = splitText[i].indexOf("ré");
                 AuftragseingangsZeit = splitText[i].substring(begindex+17,begindex+22);
-                AuftragseingangsZeit = AuftragseingangsZeit.trim();
+                AuftragseingangsZeit = AuftragseingangsZeit.replace(".","").replace(",","").trim();;
                 break;
             }
         }
@@ -144,7 +144,7 @@ public class InfliximabCHUV {
         if (splitText[i].contains("Enregistré")) {
             int begindex = splitText[i].indexOf("complet");
             AuftragsausgangsDatum = splitText[i].substring(begindex + 11, begindex + 19);
-            AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
+            AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
             break;
         }
         }
@@ -158,7 +158,7 @@ public class InfliximabCHUV {
                 int begindex = splitText[i].indexOf("mab");
                 Result1 = splitText[i].substring(begindex + 4, begindex + 9);
                 Result1 = Result1.replace("(", "").replace(")", "").replace("p", "").replace("u", "");
-                Result1 = Result1.trim();
+                Result1 = Result1.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -171,7 +171,7 @@ public class InfliximabCHUV {
                     int begindex = splitText[i].indexOf("ml");
                     Result1OldDate = splitText[i].substring(begindex+12);
                     Result1OldDate = Result1OldDate.replace("(","").replace(")","").replace("u", "");
-                    Result1OldDate = Result1OldDate.trim();
+                    Result1OldDate = Result1OldDate.replace(".","").replace(",","").trim();
                     break;
                 }
             }
@@ -208,7 +208,7 @@ public class InfliximabCHUV {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("anti-Infliximab")) {
                 int begindex = splitText[i].indexOf("mab");
-                Result2 = splitText[i].substring(begindex + 4, begindex + 6);
+                Result2 = splitText[i].substring(begindex + 4, begindex + 9);
                 Result2 = Result2.replace("(", "").replace(")", "").replace("p", "").replace("u", "");
                 Result2 = Result2.trim();
                 break;
@@ -229,25 +229,26 @@ public class InfliximabCHUV {
         return Reference2;
     }
     public static String getResult2OldDate(String[] splitText) {
-        String Result2Old = "";
+        String Result2OldDate = "";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("anti-Infliximab")) {
                 int begindex = splitText[i].indexOf("ml");
-                Result2Old = splitText[i].substring(begindex+12);
-                Result2Old = Result2Old.replace("(","").replace(")","").replace("u", "");
-                Result2Old = Result2Old.trim();
+                Result2OldDate = splitText[i].substring(begindex+12);
+                Result2OldDate = Result2OldDate.replace("(","").replace(")","").replace("u", "");
+                Result2OldDate = Result2OldDate.replace(".","").replace(",","").trim();
                 break;
             }
         }
-        return Result2Old;
-    }public static String getResult2Old(String[] splitText) {
+        return Result2OldDate;
+    }
+    public static String getResult2Old(String[] splitText) {
         String Result2Old = "";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("anti-Infliximab")) {
                 int begindex = splitText[i].indexOf("ml");
                 Result2Old = splitText[i].substring(begindex+7,begindex+12);
                 Result2Old = Result2Old.replace("(","").replace(")","").replace("u", "");
-                Result2Old = Result2Old.trim();
+                Result2Old = Result2Old.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -256,7 +257,16 @@ public class InfliximabCHUV {
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
         System.out.println("New"+"\n");
+        list.put("Name","");
         list.put("PID","");
+        list.put("Geschlecht","");
+        list.put("LOINC1","39803-2^inFLIXimab [Mass/volume] in Serum or Plasma^LN");
+        list.put("LOINC2","86896-8^inFLIXimab [Mass/volume] in Serum or Plasma by Immunoassay^LN");
+        list.put("EInheit1","ug/mL");
+        list.put("EInheit2","ng/mL");
+        list.put("Result1a","");
+        list.put("Befund","");
+
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {
@@ -270,16 +280,16 @@ public class InfliximabCHUV {
             list.put("Auftragsnummer","");
         }
         try {
-            list.put("EntnahmeDatum", getEntnahmeDatum(splitText(text)));
+            list.put("Entnahmedatum", getEntnahmeDatum(splitText(text)));
         } catch (Exception e) {
             MainController.logfile.put("InfliximabCHUV","Kein Entnahmedatum erkennbar");
-            list.put("EntnahmeDatum","");
+            list.put("Entnahmedatum","");
         }
         try {
-            list.put("EntnahmeZeit", getEntnahmeZeit(splitText(text)));
+            list.put("Entnahmezeit", getEntnahmeZeit(splitText(text)));
         } catch (Exception e) {
             MainController.logfile.put("InfliximabCHUV","Keine Entnahmezeit erkennbar");
-            list.put("EntnahmeZeit","");
+            list.put("Entnahmezeit","");
         }
         try {
             list.put("Auftragseingangsdatum", getAuftragseingangsDatum(splitText(text)));
@@ -288,10 +298,10 @@ public class InfliximabCHUV {
             list.put("Auftragseingangsdatum","");
         }
         try {
-            list.put("AuftragseingangsZeit", getAuftragseingangsZeit(splitText(text)));
+            list.put("Auftragseingangszeit", getAuftragseingangsZeit(splitText(text)));
         } catch (Exception e) {
             MainController.logfile.put("InfliximabCHUV","Keine Auftragseingangszeit erkennbar");
-            list.put("AuftragseingangsZeit","");
+            list.put("Auftragseingangszeit","");
         }
         try {
             list.put("Auftragsausgangsdatum", getAuftragsausgangsDatum(splitText(text)));
@@ -359,11 +369,12 @@ public class InfliximabCHUV {
             MainController.logfile.put("InfliximabCHUV","Kein Sender erkennbar");
         }
         try {
-            list.put("Befunder", getBefunder(splitText(text)));
+            list.put("Befundend", getBefundend(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.put("Befunder","Kein Befunder erkennbar");
-            list.put("Befunder","");
+            MainController.logfile.put("Befundend","Keine befundende Person erkennbar");
+            list.put("Befundend","");
         }
+
         return list;
     }
 }

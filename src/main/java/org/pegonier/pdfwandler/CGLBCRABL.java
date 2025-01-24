@@ -22,7 +22,7 @@ public class CGLBCRABL {
         for (String s : splitText) {
             if (s.contains("Geb:")) {
                 GebDatum = s.substring(4, 16);
-                GebDatum = GebDatum.replace(",",".").trim();
+                GebDatum = GebDatum.replace(",",".").replace(".","").replace(",","").trim();
             }
         }
         return GebDatum;
@@ -61,7 +61,7 @@ public class CGLBCRABL {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("Entnahme")) {
                 EntnahmeDatum = splitText[i+1].substring(13, 23);
-                EntnahmeDatum = EntnahmeDatum.trim();
+                EntnahmeDatum = EntnahmeDatum.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -73,7 +73,7 @@ public class CGLBCRABL {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("Entnahme")) {
                 Entnahmezeit = splitText[i+1].substring(24, 29);
-                Entnahmezeit = Entnahmezeit.trim();
+                Entnahmezeit = Entnahmezeit.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -85,7 +85,7 @@ public class CGLBCRABL {
             if (splitText[i].contains("Entnahme")) {
                 AuftragseingangsDatum = splitText[i+1].substring(30, 40);
                 System.out.println(splitText[i+1]);
-                AuftragseingangsDatum = AuftragseingangsDatum.replace(",",".").trim();
+                AuftragseingangsDatum = AuftragseingangsDatum.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -96,7 +96,7 @@ public class CGLBCRABL {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("Entnahme")) {
                 AuftragseingangsZeit = splitText[i+1].substring(40,46);
-                AuftragseingangsZeit = AuftragseingangsZeit.trim();
+                AuftragseingangsZeit = AuftragseingangsZeit.replace(".","").replace(",","").trim();
                 break;
             }
         }
@@ -121,7 +121,7 @@ public class CGLBCRABL {
             if (s.contains("Gedruckt:")) {
                 int begindex = s.indexOf("ckt:");
                 AuftragsausgangsDatum = s.substring(begindex+4, begindex+16);
-                AuftragsausgangsDatum = AuftragsausgangsDatum.trim();
+                AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
             }
         }
         return AuftragsausgangsDatum;
@@ -141,21 +141,32 @@ public class CGLBCRABL {
             return Geschlecht;
         }
     public static String getResult1(String[] splitText) {
-        String Result1 = "";
+        String Result1  = "";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("ABL1: positiv")) {
-                Result1 = splitText[i].substring(10);
+                Result1 = splitText[i].substring(19);
                 Result1 = Result1.trim();
-                break;
-            }
-            else if (splitText[i].contains("Resultate")) {
-                int begindex = splitText[i+1].indexOf("ABL");
-                Result1 = splitText[i+1].substring(begindex+6);
-                Result1 = Result1.replace(":","").replace(",",".").trim();
                 break;
             }
         }
         return Result1;
+    }
+    public static String getResult1a(String[] splitText) {
+        String Result1a = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("ABL1: positiv")) {
+                Result1a = splitText[i].substring(10,18);
+                Result1a = Result1a.trim();
+                break;
+            }
+            else if (splitText[i].contains("Resultate")) {
+                int begindex = splitText[i+1].indexOf("ABL");
+                Result1a = splitText[i+1].substring(begindex+6);
+                Result1a = Result1a.replace(":","").replace(",",".").trim();
+                break;
+            }
+        }
+        return Result1a;
     }
     public static String getBefunder(String[] splitText) {
         String Befunder = "";
@@ -172,6 +183,19 @@ public class CGLBCRABL {
     }
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
+        list.put("Result1","");
+        list.put("Result1Old","");
+        list.put("Result1OldDate","");
+        list.put("Reference1","");
+        list.put("Result2","");
+        list.put("Reference2","");
+        list.put("Result2Old","");
+        list.put("Result2OldDate","");
+        list.put("Institution","");
+        list.put("LOINC1","46434-7^t(9;22)(ABL1,BCR)/control Bld/T^LN");
+        list.put("LOINC2","");
+        list.put("Einheit1","");
+        list.put("Befund","");
 
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
@@ -192,16 +216,16 @@ public class CGLBCRABL {
             list.put("PID","");
         }
         try {
-            list.put("EntnahmeDatum", getEntnahmeDatum(splitText(text)));
+            list.put("Entnahmedatum", getEntnahmeDatum(splitText(text)));
         } catch (Exception e) {
             System.out.println("Kein Entnahmedatum erkennbar");
-            list.put("EntnahmeDatum","");
+            list.put("Entnahmedatum","");
         }
         try {
-            list.put("EntnahmeZeit", getEntnahmeZeit(splitText(text)));
+            list.put("Entnahmezeit", getEntnahmeZeit(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Entnahmezeit erkennbar");
-            list.put("EntnahmeZeit","");
+            list.put("Entnahmezeit","");
         }
         try {
             list.put("Auftragseingangsdatum", getAuftragseingangsDatum(splitText(text)));
@@ -210,10 +234,10 @@ public class CGLBCRABL {
             list.put("Auftragseingangsdatum","");
         }
         try {
-            list.put("AuftragseingangsZeit", getAuftragseingangsZeit(splitText(text)));
+            list.put("Auftragseingangszeit", getAuftragseingangsZeit(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Auftragseingangszeit erkennbar");
-            list.put("AuftragseingangsZeit","");
+            list.put("Auftragseingangszeit","");
         }
         try {
             list.put("Auftragsausgangsdatum", getAuftragsausgangsDatum(splitText(text)));
@@ -227,10 +251,10 @@ public class CGLBCRABL {
             System.out.println("Kein Auftraggeber erkennbar");
         }
         try {
-            list.put("Result1", getResult1(splitText(text)));
+            list.put("Result1a", getResult1a(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine Resultate erkennbar");
-            list.put("Result1","");
+            list.put("Result1a","");
         }
         try {
             list.put("Institution", "Hämatologie CGL Insel");
@@ -250,10 +274,10 @@ public class CGLBCRABL {
             list.put("Geschlecht","");
         }
         try {
-            list.put("Befunder", getBefunder(splitText(text)));
+            list.put("Befundend", getBefunder(splitText(text)));
         } catch (Exception e) {
-            MainController.logfile.put("Befunder","Kein Befunder erkennbar");
-            list.put("Befunder","");
+            MainController.logfile.put("Befundend","Keine Befundende erkennbar");
+            list.put("Befundend","");
         }
         return list;
     }

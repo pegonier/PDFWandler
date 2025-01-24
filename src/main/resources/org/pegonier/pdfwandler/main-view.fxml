@@ -5,21 +5,22 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="538.0" prefWidth="403.0" scaleShape="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pegonier.pdfwandler.MainController">
+<VBox prefHeight="592.0" prefWidth="436.0" scaleShape="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pegonier.pdfwandler.MainController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
    <AnchorPane prefHeight="540.0" prefWidth="363.0">
       <children>
 
-          <Label fx:id="currentText" alignment="TOP_LEFT" layoutY="124.0" prefHeight="281.0" prefWidth="361.0" />
-              <Region fx:id="spacer" prefHeight="0.0" prefWidth="350.0" />
+          <Label fx:id="currentText" alignment="TOP_LEFT" layoutY="124.0" prefHeight="338.0" prefWidth="361.0" />
+              <Region prefHeight="0.0" prefWidth="350.0" />
          <ChoiceBox fx:id="DokChoice" layoutY="2.0" prefHeight="25.0" prefWidth="361.0" />
           <TextField fx:id="inputField" layoutY="33.0" onAction="#ANRsetzen" prefHeight="25.0" prefWidth="138.0" promptText="Auftragsnummer" />
          <TextField fx:id="inputField2" layoutY="58.0" onAction="#PIDsetzen" prefWidth="138.0" promptText="PID" />
@@ -28,7 +29,9 @@
          <TextField fx:id="inputField5" layoutX="220.0" layoutY="58.0" onAction="#Gender" prefHeight="25.0" prefWidth="95.0" promptText="Gender" />
           <Button alignment="TOP_CENTER" layoutX="220.0" layoutY="83.0" onAction="#umwandeln" text="Umwandeln" />
           <Button fx:id="Properties" layoutX="325.0" layoutY="33.0" onAction="#Properties" text="*" />
-         <ScrollPane fx:id="log" layoutX="1.0" layoutY="462.0" prefHeight="36.0" prefWidth="361.0" />
+         <ScrollPane fx:id="log" layoutX="1.0" layoutY="462.0" prefHeight="96.0" prefWidth="361.0">
+                 <TextArea fx:id="logArea" wrapText="true" />
+          </ScrollPane>
       </children>
    </AnchorPane>
 
