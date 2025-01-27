@@ -23,7 +23,7 @@ public class HL7Parser {
             StringBuilder dokTitle = new StringBuilder();
             dokTitle.append(Path).append(HL7Hash.get("Institution")).append(" ").append(dokID).append(".txt");
             String dokTitleString = String.valueOf(dokTitle);
-            SendAndReceiveAMessage Sender = new SendAndReceiveAMessage();
+            SocketConnector Sender = new SocketConnector();
             if (!PropController.sockPath) {
                 textSaver.SaveTxT(parsedtext, dokTitleString);
             }
@@ -33,6 +33,7 @@ public class HL7Parser {
         }
         catch (Exception E) {
             System.out.println("Dokument erstellen fehlgeschlagen");
+            MainController.logfile.put(LocalDateTime.now(),Path+" erstellen fehlgeschlagen");
             E.printStackTrace();}
         }
 }

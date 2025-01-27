@@ -6,12 +6,13 @@ import java.util.HashMap;
 public class dokSourceCheck {
 
     HashMap<String, String> dokHash = new HashMap<>();
-    HashMap<String, String> HashOut = new HashMap<>();
+    public HashMap<String, String> HashOut = new HashMap<>();
 
     public String dokSource (String Path) throws IOException {
         String dokType ="";
-        BOXReader2 dok2 = new BOXReader2(); String dok2String = String.valueOf(dok2.read(Path));
         BOXReader dok = new BOXReader();
+        BOXReader2 dok2 = new BOXReader2(); String dok2String = String.valueOf(dok2.read(Path));
+        BOXReader3 dok3 = new BOXReader3(); String dok3String = String.valueOf(dok3.read(Path));
         String dokString = String.valueOf(dok.read(Path));
 
         if (dokString.contains("SRK")) {
@@ -46,11 +47,11 @@ public class dokSourceCheck {
             setOutHash(dokHash);
         }
         if (dokString.contains("Anmeldung Radiologie")) {
-            dokType = "Anmeldung Radiologie";
+            dokType = String.valueOf(AnmeldungRadiologieBalgrist.list(dok3String));
+            dokHash = AnmeldungRadiologieBalgrist.list(dok3String);
+            setOutHash(dokHash);
         }
-        dokType=dokType.replace("}", "");
-        dokType=dokType.replace("{", " ");
-        dokType=dokType.replace(",","\n");
+        dokType=dokType.replace("}", "").replace("{", " ").replace(",","\n");
         return dokType;
     }
     public void setOutHash(HashMap<String, String>inHash) {

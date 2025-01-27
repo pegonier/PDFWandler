@@ -157,8 +157,7 @@ public class InfliximabCHUV {
             if (splitText[i].contains("Infliximab")) {
                 int begindex = splitText[i].indexOf("mab");
                 Result1 = splitText[i].substring(begindex + 4, begindex + 9);
-                Result1 = Result1.replace("(", "").replace(")", "").replace("p", "").replace("u", "");
-                Result1 = Result1.replace(".","").replace(",","").trim();
+                Result1 = Result1.replace("(", "").replace(")", "").replace("p", "").replace("u", "").trim();
                 break;
             }
         }
@@ -262,8 +261,8 @@ public class InfliximabCHUV {
         list.put("Geschlecht","");
         list.put("LOINC1","39803-2^inFLIXimab [Mass/volume] in Serum or Plasma^LN");
         list.put("LOINC2","86896-8^inFLIXimab [Mass/volume] in Serum or Plasma by Immunoassay^LN");
-        list.put("EInheit1","ug/mL");
-        list.put("EInheit2","ng/mL");
+        list.put("Einheit1","ug/mL");
+        list.put("Einheit2","ng/mL");
         list.put("Result1a","");
         list.put("Befund","");
 

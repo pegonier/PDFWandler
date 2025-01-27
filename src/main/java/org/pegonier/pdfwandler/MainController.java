@@ -34,9 +34,7 @@ public class MainController {
     @FXML
     private TextField inputField5;
     @FXML
-    public static TextArea logArea= new TextArea();
-    @FXML
-    public ScrollPane log = new ScrollPane(logArea);
+    public TextField LogField;
     @FXML
     private ChoiceBox <String>DokChoice;
     public static HashMap<Object, Object> PathMap;
@@ -84,7 +82,7 @@ public class MainController {
             currentText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
         }
         logString = logString + logfile+"\n";
-        logArea.setText(logString);
+        LogField.setText(logString);
         LogSaver.saveLog(logfile,currentLogDir);
     }
 
@@ -95,9 +93,11 @@ public class MainController {
                 dokSourceCheck dokCheck = new dokSourceCheck();
                 currentText.setText(dokCheck.dokSource(chosenDokStr));
                 dokHashmap = dokCheck.dokHash;
+                //currentText.setText(String.valueOf(dokHashmap));
+
                 logfile.put(LocalDateTime.now(),chosenDokStr);
                 logString = logString + logfile+"\n";
-                logArea.setText(logString);
+                LogField.setText(logString);
                 LogSaver.saveLog(logfile,currentLogDir);
 
             } catch (Exception e) {
@@ -112,14 +112,16 @@ public class MainController {
             HL7Parser outPars = new HL7Parser();
             outPars.pars(dokHashmap, Path);
             String dest = "Parsed: "+chosenDokStr;
-            logfile.put(LocalDateTime.now(), System.getProperty(dest));
-            logArea.appendText(logfile+"\n");
+            logfile.put(LocalDateTime.now(), System.getProperty(dest)+ " gesendet");
+            LogField.appendText(logfile+"\n");
+            currentText.setText(DokChoice.getValue() + " gesendet");
 
         }
         catch (Exception e) {
             System.out.println("erstellen des Dokuments fehlgeschlagen");
-            logfile.put(LocalDateTime.now(), System.getProperty("erstellen des Dokuments fehlgeschlagen "+chosenDokStr));
-            logArea.appendText(logfile+"\n");
+            logfile.put(LocalDateTime.now(), System.getProperty("erstellen des Dokuments fehlgeschlagen "+DokChoice.getValue()));
+            LogField.appendText(logfile+"\n");
+            currentText.setText("Versand von "+DokChoice.getValue() + " fehlgeschlagen");
         }
         LogSaver.saveLog(logfile,currentLogDir);
     }

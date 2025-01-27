@@ -79,12 +79,12 @@ public class AdalimumabCHUV {
 
     public static String getEntnahmeDatum(String[] splitText) {
         String EntnahmeDatum = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("levé")) {
-                int begindex = splitText[i].indexOf("vé");
-                EntnahmeDatum = splitText[i].substring(begindex+6,begindex+14);
-                EntnahmeDatum = EntnahmeDatum.replace("le","");
-               // EntnahmeDatum = EntnahmeDatum.substring(0,9);
+        for (String s : splitText) {
+            if (s.contains("levé")) {
+                int begindex = s.indexOf("vé");
+                EntnahmeDatum = s.substring(begindex + 6, begindex + 14);
+                EntnahmeDatum = EntnahmeDatum.replace("le", "");
+                // EntnahmeDatum = EntnahmeDatum.substring(0,9);
                 break;
             }
         }
@@ -94,10 +94,10 @@ public class AdalimumabCHUV {
 
     public static String getEntnahmeZeit(String[] splitText) {
         String Entnahmezeit = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("élevé")) {
-                int begindex = splitText[i].indexOf("vé");
-                Entnahmezeit = splitText[i].substring(begindex+17,begindex+23);
+        for (String s : splitText) {
+            if (s.contains("élevé")) {
+                int begindex = s.indexOf("vé");
+                Entnahmezeit = s.substring(begindex + 17, begindex + 23);
                 break;
             }
         }
@@ -106,11 +106,11 @@ public class AdalimumabCHUV {
     }
     public static String getAuftragseingangsDatum(String[] splitText) {
         String AuftragseingangsDatum = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Enregistré")) {
-                int begindex = splitText[i].indexOf("ré");
-                AuftragseingangsDatum = splitText[i].substring(begindex+6,begindex+14);
-                AuftragseingangsDatum = AuftragseingangsDatum.replace(".","").replace(",","").trim();
+        for (String s : splitText) {
+            if (s.contains("Enregistré")) {
+                int begindex = s.indexOf("ré");
+                AuftragseingangsDatum = s.substring(begindex + 6, begindex + 14);
+                AuftragseingangsDatum = AuftragseingangsDatum.replace(".", "").replace(",", "").trim();
                 break;
             }
         }
@@ -118,11 +118,11 @@ public class AdalimumabCHUV {
     }
     public static String getAuftragseingangsZeit(String[] splitText) {
         String AuftragseingangsZeit = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Enregistré")) {
-                int begindex = splitText[i].indexOf("ré");
-                AuftragseingangsZeit = splitText[i].substring(begindex+17,begindex+22);
-                AuftragseingangsZeit = AuftragseingangsZeit.replace(".","").replace(",","").trim();
+        for (String s : splitText) {
+            if (s.contains("Enregistré")) {
+                int begindex = s.indexOf("ré");
+                AuftragseingangsZeit = s.substring(begindex + 17, begindex + 22);
+                AuftragseingangsZeit = AuftragseingangsZeit.replace(".", "").replace(",", "").trim();
                 break;
             }
         }
@@ -143,13 +143,13 @@ public class AdalimumabCHUV {
 
     public static String getAuftragsausgangsDatum(String[] splitText) {
         String AuftragsausgangsDatum = "";
-        for (int i = 0; i < splitText.length; i++) {
-        if (splitText[i].contains("Enregistré")) {
-            int begindex = splitText[i].indexOf("complet du");
-            AuftragsausgangsDatum = splitText[i].substring(begindex + 10, begindex + 19);
-            AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
-            break;
-        }
+        for (String s : splitText) {
+            if (s.contains("Enregistré")) {
+                int begindex = s.indexOf("complet du");
+                AuftragsausgangsDatum = s.substring(begindex + 10, begindex + 19);
+                AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".", "").replace(",", "").trim();
+                break;
+            }
         }
         return AuftragsausgangsDatum;
     }
@@ -171,13 +171,12 @@ public class AdalimumabCHUV {
 
     public static String getResult1(String[] splitText) {
         String Result1 = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("d'Adalimumab")) {
-                int begindex = splitText[i].indexOf("mab");
-                Result1 = splitText[i].substring(begindex+3,begindex+9);
-                Result1 = Result1.replace("(","").replace(")","").replace("p","");
+        for (String s : splitText) {
+            if (s.contains("d'Adalimumab")) {
+                int begindex = s.indexOf("mab");
+                Result1 = s.substring(begindex + 3, begindex + 9);
+                Result1 = Result1.replace("(", "").replace(")", "").replace("p", "");
                 //Result1 = Result1.trim();
-                System.out.println("Tetx  "+splitText[i]);
                 break;
             }
         }
@@ -185,11 +184,12 @@ public class AdalimumabCHUV {
     }
     public static String getReference1(String[] splitText) {
         String Reference1 = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Adalimumab")) {
-                int begindex = splitText[i].indexOf("ml");
-                Reference1 = splitText[i].substring(begindex+ 3, begindex + 7);;
-                Reference1 = Reference1.replace("(","").replace(")","").replace("?", "≥");
+        for (String s : splitText) {
+            if (s.contains("Adalimumab")) {
+                int begindex = s.indexOf("ml");
+                Reference1 = s.substring(begindex + 3, begindex + 7);
+                ;
+                Reference1 = Reference1.replace("(", "").replace(")", "").replace("?", "≥");
                 Reference1 = Reference1.trim();
                 break;
             }
@@ -212,13 +212,15 @@ public class AdalimumabCHUV {
     }
     public static String getResult1OldDate(String[] splitText) {
         String Result1OldDate = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("d'Adalimumab")) {
-                int endIndex = splitText[i].length();
-                Result1OldDate = splitText[i].substring(endIndex-12,endIndex-0);
-                Result1OldDate = Result1OldDate.replace("(","").replace(")","").replace("p","");
-                Result1OldDate = Result1OldDate.replace(".","").replace(",","").trim();
-                if (countNumbers(Result1OldDate)!=6) {Result1OldDate="";}
+        for (String s : splitText) {
+            if (s.contains("d'Adalimumab")) {
+                int endIndex = s.length();
+                Result1OldDate = s.substring(endIndex - 12, endIndex);
+                Result1OldDate = Result1OldDate.replace("(", "").replace(")", "").replace("p", "");
+                Result1OldDate = Result1OldDate.replace(".", "").replace(",", "").trim();
+                if (countNumbers(Result1OldDate) != 6) {
+                    Result1OldDate = "";
+                }
                 break;
             }
         }
@@ -226,11 +228,11 @@ public class AdalimumabCHUV {
     }
     public static String getResult2(String[] splitText) {
         String Result2 = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("anti-")) {
-                int begindex = splitText[i].indexOf("mab");
-                Result2 = splitText[i].substring(begindex+4,begindex+9);
-                Result2 = Result2.replace("(","").replace(")","").replace("p","");
+        for (String s : splitText) {
+            if (s.contains("anti-")) {
+                int begindex = s.indexOf("mab");
+                Result2 = s.substring(begindex + 4, begindex + 9);
+                Result2 = Result2.replace("(", "").replace(")", "").replace("p", "");
                 Result2 = Result2.trim();
                 break;
             }
@@ -239,11 +241,11 @@ public class AdalimumabCHUV {
     }
     public static String getResult2Old(String[] splitText) {
         String Result2Old = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("anti-")) {
-                int begindex = splitText[i].indexOf("ml");
-                Result2Old = splitText[i].substring(begindex+6,begindex+10);
-                Result2Old = Result2Old.replace("(","").replace(")","").replace("p","");
+        for (String s : splitText) {
+            if (s.contains("anti-")) {
+                int begindex = s.indexOf("ml");
+                Result2Old = s.substring(begindex + 6, begindex + 10);
+                Result2Old = Result2Old.replace("(", "").replace(")", "").replace("p", "");
                 Result2Old = Result2Old.trim();
                 break;
             }
@@ -252,13 +254,15 @@ public class AdalimumabCHUV {
     }
     public static String getResult2OldDate(String[] splitText) {
         String Result2OldDate = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("anti")) {
-                int endIndex = splitText[i].length();
-                Result2OldDate = splitText[i].substring(endIndex-12,endIndex-0);
-                Result2OldDate = Result2OldDate.replace("(","").replace(")","").replace("p","");
-                Result2OldDate = Result2OldDate.replace(".","").replace(",","").trim();
-                if (countNumbers(Result2OldDate)!=6) {Result2OldDate="";}
+        for (String s : splitText) {
+            if (s.contains("anti")) {
+                int endIndex = s.length();
+                Result2OldDate = s.substring(endIndex - 12, endIndex);
+                Result2OldDate = Result2OldDate.replace("(", "").replace(")", "").replace("p", "");
+                Result2OldDate = Result2OldDate.replace(".", "").replace(",", "").trim();
+                if (countNumbers(Result2OldDate) != 6) {
+                    Result2OldDate = "";
+                }
                 break;
             }
         }
@@ -266,11 +270,12 @@ public class AdalimumabCHUV {
     }
     public static String getReference2(String[] splitText) {
         String Referenz2 = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("anti-")) {
-                int begindex = splitText[i].indexOf("ml");
-                Referenz2 = splitText[i].substring(begindex+ 3, begindex + 6);;
-                Referenz2 = Referenz2.replace("(","").replace(")","").replace("?", "≥");
+        for (String s : splitText) {
+            if (s.contains("anti-")) {
+                int begindex = s.indexOf("ml");
+                Referenz2 = s.substring(begindex + 3, begindex + 6);
+                ;
+                Referenz2 = Referenz2.replace("(", "").replace(")", "").replace("?", "≥");
                 Referenz2 = Referenz2.trim();
                 break;
             }

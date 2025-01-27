@@ -1,6 +1,8 @@
 package org.pegonier.pdfwandler;
 
-import java.util.HashMap;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class CGLJak2 {
 
@@ -144,7 +146,7 @@ public class CGLJak2 {
             return Geschlecht;
         }
 
-    public static String getResult1(String[] splitText) {
+    public static String getResult1a(String[] splitText) {
         String Result1 = "";
         for (int i = 0; i < splitText.length; i++) {
            if (splitText[i].contains("Resultate")) {
@@ -155,7 +157,30 @@ public class CGLJak2 {
             }
         }
         return Result1;
-    }public static String getResult1a(String[] splitText) {
+    }public static String getResult1(String[] splitText) {
+        String Result1a = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Resultate")) {
+                int begindex = splitText[i+1].indexOf("617F:");
+                Result1a = splitText[i+1].substring(begindex+15,begindex+20);
+                Result1a = Result1a.replace(",",".").trim();
+                break;
+            }
+        }
+        return Result1a;
+    }
+    public static String getResult2(String[] splitText) {
+        String Result1 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Resultate")) {
+                int begindex = splitText[i+1].indexOf("617F:");
+                Result1 = splitText[i+1].substring(begindex+5,begindex+13);
+                Result1 = Result1.replace(",",".").trim();
+                break;
+            }
+        }
+        return Result1;
+    }public static String getResult3(String[] splitText) {
         String Result1a = "";
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("Resultate")) {
@@ -178,29 +203,9 @@ public class CGLJak2 {
                         Befund = Befund.trim();
                     }
                 break;
-                    //else if (splitText[j].contains("Technisch")||splitText[j].contains("Freigabe")) break;
             }
         }
         return Befund;
-    }
-    public static HashMap<String, String> getMoreResults(String[] splitText) {
-        HashMap<String, String> Results = new HashMap<>();
-        int OBXNR = 1;
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("ABL1: positiv")) {
-                for (int j = i; j < splitText.length; j++) {
-                    if (splitText[j].contains("PBL")){
-                        int begindex = splitText[j].indexOf("PBL");
-                        OBXNR = OBXNR +1;
-                        String OBX = "OBX|"+OBXNR+"|NM|JAK2PCT^JAK2 V617F Mutationsanteil||"+splitText[i].substring(begindex+6,begindex+12).trim()+"|%|<1|H|||F|||"+splitText[i].substring(0,10).trim();
-                        Results.put(String.valueOf(OBXNR),OBX);
-                        System.out.println(OBXNR +" "+OBX);
-                    }
-                    break;
-                }
-            }
-        }
-        return Results;
     }
     public static String getBefundend(String[] splitText) {
         String Befundend = "";
@@ -215,6 +220,14 @@ public class CGLJak2 {
         }
         return Befundend;
     }
+    /*public List<String> oldResults (String[] splitText) {
+        List<String> lines = new ArrayList<>();
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("PBL")) {
+                lines.add(splitText[i]);
+            }
+        }
+    }*/
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
         list.put("Result1Old","");
@@ -321,12 +334,6 @@ public class CGLJak2 {
         } catch (Exception e) {
             MainController.logfile.put("Befunder","Kein Befunder erkennbar");
             list.put("Befundend","");
-        }
-        try {
-            HashMap<String, String> moreResults=getMoreResults(splitText(text));
-            list.putAll(moreResults);
-        } catch (Exception e) {
-            MainController.logfile.put("Befunder","Kein Befunder erkennbar");
         }
 
         return list;

@@ -72,6 +72,33 @@ public class SRKRHD {
     public static HashMap<String, String> list(String text) {
         HashMap<String, String> list = new HashMap<>();
         System.out.println("New"+"\n");
+        list.put("Name","");
+        list.put("PID","");
+        list.put("Geschlecht","");
+        list.put("Geburtsdatum","");
+        list.put("Auftragsnummer","");
+        list.put("Entnahmedatum","");
+        list.put("Entnahmezeit","");
+        list.put("Auftragseingangsdatum","");
+        list.put("Auftragseingangszeit","");
+        list.put("Auftragsausgangsdatum","");
+        list.put("Auftraggeber","");
+        list.put("Result1","");
+        list.put("Result1a","");
+        list.put("Result1Old","");
+        list.put("Result1OldDate","");
+        list.put("Reference1","");
+        list.put("Result2","");
+        list.put("Reference2","");
+        list.put("Result2Old","");
+        list.put("Result2OldDate","");
+        list.put("Institution","");
+        list.put("LOINC1","");
+        list.put("LOINC2","");
+        list.put("Einheit1","");
+        list.put("Befundend","");
+        list.put("Befund","");
+        
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {
