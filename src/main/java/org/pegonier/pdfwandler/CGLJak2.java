@@ -1,7 +1,5 @@
 package org.pegonier.pdfwandler;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class CGLJak2 {
@@ -67,6 +65,7 @@ public class CGLJak2 {
             if (splitText[i].contains("Entnahme")) {
                 EntnahmeDatum = splitText[i+1].substring(13, 23);
                 EntnahmeDatum = EntnahmeDatum.replace(".","").replace(",","").trim();
+                EntnahmeDatum = changeDateForm.dateTurner(EntnahmeDatum);
                 break;
             }
         }
@@ -91,6 +90,7 @@ public class CGLJak2 {
                 AuftragseingangsDatum = splitText[i+1].substring(30, 40);
                 System.out.println(splitText[i+1]);
                 AuftragseingangsDatum = AuftragseingangsDatum.replace(".","").replace(",","").trim();
+                AuftragseingangsDatum = changeDateForm.dateTurner(AuftragseingangsDatum);
                 break;
             }
         }
@@ -127,6 +127,7 @@ public class CGLJak2 {
                 int begindex = s.indexOf("ckt:");
                 AuftragsausgangsDatum = s.substring(begindex+4, begindex+16);
                 AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
+                AuftragsausgangsDatum = changeDateForm.dateTurner(AuftragsausgangsDatum);
             }
         }
         return AuftragsausgangsDatum;
@@ -163,34 +164,148 @@ public class CGLJak2 {
             if (splitText[i].contains("Resultate")) {
                 int begindex = splitText[i+1].indexOf("617F:");
                 Result1a = splitText[i+1].substring(begindex+15,begindex+20);
-                Result1a = Result1a.replace(",",".").trim();
+                Result1a = Result1a.replace(",", ".").replace("%", "").trim();
                 break;
             }
         }
         return Result1a;
     }
     public static String getResult2(String[] splitText) {
-        String Result1 = "";
+        String Result2 = "";
         for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Resultate")) {
-                int begindex = splitText[i+1].indexOf("617F:");
-                Result1 = splitText[i+1].substring(begindex+5,begindex+13);
-                Result1 = Result1.replace(",",".").trim();
+            if (splitText[i].contains("Verlauf JAK2")) {
+                int begindex = splitText[i+1].indexOf("PBL:");
+                Result2 = splitText[i+1].substring(begindex+6,begindex+12);
+                Result2 = Result2.replace(",", ".").replace("%", "").trim();
                 break;
             }
         }
-        return Result1;
-    }public static String getResult3(String[] splitText) {
-        String Result1a = "";
+        return Result2;
+    }
+    public static String getResult2Date(String[] splitText) {
+        String Result2Date = "";
         for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Resultate")) {
-                int begindex = splitText[i+1].indexOf("617F:");
-                Result1a = splitText[i+1].substring(begindex+15,begindex+20);
-                Result1a = Result1a.replace(",",".").trim();
+            if (splitText[i].contains("Verlauf JAK2")) {
+                Result2Date = splitText[i+1].substring(0,12);
+                Result2Date = Result2Date.replace(".","").trim();
+                Result2Date = changeDateForm.dateTurner(Result2Date);
                 break;
             }
         }
-        return Result1a;
+        return Result2Date;
+    }
+    public static String getResult3(String[] splitText) {
+        String Result3 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2")) {
+                if (!splitText[i].contains("Freigabe")) {
+                    int begindex = splitText[i + 2].indexOf("PBL:");
+                    Result3 = splitText[i + 2].substring(begindex + 6, begindex + 12);
+                    Result3 = Result3.replace(",", ".").replace("%", "").trim();
+                    break;
+                }
+            }
+        }
+        return Result3;
+    }
+    public static String getResult3Date(String[] splitText) {
+        String Result3Date = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2")) {
+                if (!splitText[i].contains("Freigabe")) {
+                    Result3Date = splitText[i+2].substring(0,12);
+                    Result3Date = Result3Date.replace(".","").trim();
+                    Result3Date = changeDateForm.dateTurner(Result3Date);
+                    break;
+                }
+            }
+        }
+        return Result3Date;
+    }
+    public static String getResult4(String[] splitText) {
+        String Result4 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2"))
+                if (!splitText[i].contains("Freigabe")) {
+                    {
+                        int begindex = splitText[i + 3].indexOf("PBL:");
+                        Result4 = splitText[i + 3].substring(begindex + 6, begindex + 12);
+                        Result4 = Result4.replace(",", ".").replace("%", "").trim();
+                        break;
+                    }
+                }
+        }
+        return Result4;
+    }
+    public static String getResult4Date(String[] splitText) {
+        String Result4Date = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2")) {
+                if (!splitText[i].contains("Freigabe")) {
+                    Result4Date = splitText[i+3].substring(0,12);
+                    Result4Date = Result4Date.replace(".","").trim();
+                    Result4Date = changeDateForm.dateTurner(Result4Date);
+                    break;
+                }
+            }
+        }
+        return Result4Date;
+    }
+    public static String getResult5(String[] splitText) {
+        String Result5 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2")) {
+                if (!splitText[i].contains("Freigabe")) {
+                    int begindex = splitText[i + 4].indexOf("PBL");
+                    Result5 = splitText[i + 4].substring(begindex + 6, begindex + 12);
+                    Result5 = Result5.replace(",", ".").replace("%", "").trim();
+                    break;
+                }
+            }
+        }
+        return Result5;
+    }
+    public static String getResult5Date(String[] splitText) {
+        String Result5Date = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2")) {
+                if (!splitText[i].contains("Freigabe")) {
+                    Result5Date = splitText[i+4].substring(0,12);
+                    Result5Date = Result5Date.replace(".","").trim();
+                    Result5Date = changeDateForm.dateTurner(Result5Date);
+                    break;
+                }
+            }
+        }
+        return Result5Date;
+    }
+    public static String getResult6(String[] splitText) {
+        String Result6 = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2")) {
+                if (!splitText[i].contains("Freigabe")) {
+                    int begindex = splitText[i + 5].indexOf("PBL");
+                    Result6 = splitText[i + 5].substring(begindex + 6, begindex + 12);
+                    Result6 = Result6.replace(",", ".").replace("%", "").trim();
+                    break;
+                }
+            }
+        }
+        return Result6;
+    }
+    public static String getResult6Date(String[] splitText) {
+        String Result6Date = "";
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Verlauf JAK2")) {
+                if (!splitText[i].contains("Freigabe")) {
+                    Result6Date = splitText[i+5].substring(0,12);
+                    Result6Date = Result6Date.replace(".","").trim();
+                    Result6Date = changeDateForm.dateTurner(Result6Date);
+                    break;
+                }
+            }
+        }
+        return Result6Date;
     }
     public static String getBefund(String[] splitText) {
         String Befund = "";
@@ -234,12 +349,21 @@ public class CGLJak2 {
         list.put("Result1OldDate","");
         list.put("Reference1","");
         list.put("Result2","");
+        list.put("Result2Date","");
+        list.put("Result3Old","");
+        list.put("Result3OldDate","");
+        list.put("Result4Old","");
+        list.put("Result4OldDate","");
+        list.put("Result5Old","");
+        list.put("Result5OldDate","");
         list.put("Reference2","");
         list.put("Result2Old","");
         list.put("Result2OldDate","");
-        list.put("LOINC2","");
-        list.put("Einheit1","");
+        list.put("LOINC2","43399-5^JAK2 gene p.Val617Phe [Presence] in Blood or Tissue by Molecular genetics method^LN");
+        list.put("Einheit1","%");
+        list.put("Einheit2","%");
         list.put("LOINC1","43399-5^JAK2 gene p.Val617Phe [Presence] in Blood or Tissue by Molecular genetics method^LN");
+        list.put("LOINC1a","43399-5^JAK2 gene p.Val617Phe [Presence] in Blood or Tissue by Molecular genetics method^LN");
 
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
@@ -301,10 +425,70 @@ public class CGLJak2 {
             list.put("Result1","");
         }
         try {
+            list.put("Result1Old", getResult2(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Keine Resultate erkennbar");
+            list.put("Result1Old","");
+        }
+        try {
+            list.put("Result2Old", getResult3(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Keine Resultate erkennbar");
+            list.put("Result2Old","");
+        }
+        try {
+            list.put("Result3Old", getResult4(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Keine Resultate erkennbar");
+            list.put("Result3Old","");
+        }
+        try {
+            list.put("Result4Old", getResult5(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Keine Resultate erkennbar");
+            list.put("Result4Old","");
+        }
+        try {
+            list.put("Result5Old", getResult6(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Keine Resultate erkennbar");
+            list.put("Result5Old","");
+        }
+        try {
             list.put("Result1a", getResult1a(splitText(text)));
         } catch (Exception e) {
             System.out.println("Keine VAF erkennbar");
             list.put("Result1a","");
+        }
+        try {
+            list.put("Result1OldDate", getResult2Date(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Kein Datum erkennbar");
+            list.put("Result1OldDate","");
+        }
+        try {
+            list.put("Result2OldDate", getResult3Date(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Kein Datum  erkennbar");
+            list.put("Result2OldDate","");
+        }
+        try {
+            list.put("Result3OldDate", getResult4Date(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Kein Datum  erkennbar");
+            list.put("Result3OldDate","");
+        }
+        try {
+            list.put("Result4OldDate", getResult5Date(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Kein Datum  erkennbar");
+            list.put("Result4OldDate","");
+        }
+        try {
+            list.put("Result5OldDate", getResult6Date(splitText(text)));
+        } catch (Exception e) {
+            System.out.println("Kein Datum  erkennbar");
+            list.put("Result5OldDate","");
         }
         try {
             list.put("Befund", getBefund(splitText(text)));

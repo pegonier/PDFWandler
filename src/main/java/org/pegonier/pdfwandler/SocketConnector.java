@@ -26,6 +26,8 @@ import java.util.Map;
              /**
  50      * Example for how to send messages out
  51      */
+             public static String getMessage = "";
+
              public void HL7v2Sender(String msg) throws Exception {
 
                 /*
@@ -124,6 +126,7 @@ import java.util.Map;
                String responseString = p.encode(response);
                System.out.println("Received response:\n" + responseString);
                MainController.logfile.put(LocalDateTime.now(),"Received response: " + responseString);
+               getMessage = "Received response: " +"\n"+ responseString;
                LogSaver.saveLog(MainController.logfile,MainController.currentLogDir);
                /*
 151        * MSH|^~\&|||||20070218200627.515-0500||ACK|54|P|2.2 MSA|AA|12345
@@ -155,7 +158,6 @@ import java.util.Map;
 
                // Stop the receiving server and client
                server.stop();
-
             }
 
             /**

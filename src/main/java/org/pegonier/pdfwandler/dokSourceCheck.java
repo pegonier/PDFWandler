@@ -2,11 +2,13 @@ package org.pegonier.pdfwandler;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class dokSourceCheck {
 
     HashMap<String, String> dokHash = new HashMap<>();
     public HashMap<String, String> HashOut = new HashMap<>();
+
 
     public String dokSource (String Path) throws IOException {
         String dokType ="";
@@ -16,40 +18,47 @@ public class dokSourceCheck {
         String dokString = String.valueOf(dok.read(Path));
 
         if (dokString.contains("SRK")) {
-            dokType = String.valueOf(SRKRHD.list(dokString));
             dokHash = SRKRHD.list(dokString);
             setOutHash(dokHash);
+            TreeMap<String, String> HashSorted = new TreeMap<>(dokHash);
+            dokType = String.valueOf(HashSorted);
         }
         if (dokString.contains("unilabs")&dokString.contains("Infliximab")) {
-            dokType = String.valueOf(unilabsReader.list(dokString));
             dokHash = unilabsReader.list(dokString);
+            TreeMap<String, String> HashSorted = new TreeMap<>(dokHash);
+            dokType = String.valueOf(HashSorted);
             setOutHash(dokHash);
         }
         if (dokString.contains("BCR:")) {
-            dokType = String.valueOf(CGLBCRABL.list(dokString));
             dokHash = CGLBCRABL.list(dokString);
             setOutHash(dokHash);
+            TreeMap<String, String> HashSorted = new TreeMap<>(dokHash);
+            dokType = String.valueOf(HashSorted);
         }
         if (dokString.contains("V617F")) {
-            dokType = String.valueOf(CGLJak2.list(dokString));
             dokHash = CGLJak2.list(dokString);
             setOutHash(dokHash);
+            TreeMap<String, String> HashSorted = new TreeMap<>(dokHash);
+            dokType = String.valueOf(HashSorted);
         }
 
         if (dokString.contains("Laboratoire")) {
-            dokType = String.valueOf(AdalimumabCHUV.list(dok2String));
             dokHash = AdalimumabCHUV.list(dok2String);
             setOutHash(dokHash);
+            TreeMap<String, String> HashSorted = new TreeMap<>(dokHash);
+            dokType = String.valueOf(HashSorted);
         }
         if (dokString.contains("Laboratoire")&dokString.contains("Infliximab")) {
-            dokType = String.valueOf(InfliximabCHUV.list(dok2String));
             dokHash = InfliximabCHUV.list(dok2String);
             setOutHash(dokHash);
+            TreeMap<String, String> HashSorted = new TreeMap<>(dokHash);
+            dokType = String.valueOf(HashSorted);
         }
         if (dokString.contains("Anmeldung Radiologie")) {
-            dokType = String.valueOf(AnmeldungRadiologieBalgrist.list(dok3String));
             dokHash = AnmeldungRadiologieBalgrist.list(dok3String);
             setOutHash(dokHash);
+            TreeMap<String, String> HashSorted = new TreeMap<>(dokHash);
+            dokType = String.valueOf(HashSorted);
         }
         dokType=dokType.replace("}", "").replace("{", " ").replace(",","\n");
         return dokType;

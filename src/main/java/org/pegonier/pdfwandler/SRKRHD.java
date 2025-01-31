@@ -98,6 +98,13 @@ public class SRKRHD {
         list.put("Einheit1","");
         list.put("Befundend","");
         list.put("Befund","");
+        list.put("Result3Old","");
+        list.put("Result3OldDate","");
+        list.put("Result4Old","");
+        list.put("Result4OldDate","");
+        list.put("Result5Old","");
+        list.put("Result5OldDate","");
+        list.put("Einheit2","%");
         
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));

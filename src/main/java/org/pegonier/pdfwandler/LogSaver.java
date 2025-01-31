@@ -12,6 +12,7 @@ public class LogSaver {
                 writer.write(entry.getKey() + ":" + entry.getValue() + "\n");
             }
         } catch (IOException e) {
+            System.out.println("Logdaten nicht gespeichert");
             e.printStackTrace();
         }
     }

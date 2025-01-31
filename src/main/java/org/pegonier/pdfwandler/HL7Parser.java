@@ -7,21 +7,50 @@ import java.util.HashMap;
 public class HL7Parser {
     public void pars(HashMap<String, String> HL7Hash, String Path) throws IOException {
         try {
+            int OBXNR = 1;
             String dokID = String.valueOf(LocalDateTime.now());
+            String GebDat = HL7Hash.get("Geburtsdatum").replace(".","").replace(",","");
+            GebDat = changeDateForm.dateTurner(GebDat);
             dokID = dokID.replace(".", "").replace(":", "").replace("T", "");
             String dokID2Sec = dokID.substring(0,14);
             String parsedtext = "MSH|^~\\&||" + HL7Hash.get("Institution") + "||" + HL7Hash.get("Auftraggeber") + "|" + dokID2Sec + "||ORU^R01|"+dokID + "|T|2.5||||||8859/1"+"\n"
-                    + "PID|1||" + HL7Hash.get("PID") + "^^^" + HL7Hash.get("Auftraggeber") + "||"+HL7Hash.get("Name")+"||" + HL7Hash.get("Geburtsdatum") + "|" + HL7Hash.get("Geschlecht")+"\n"
+                    + "PID|1||" + HL7Hash.get("PID") + "^^^" + HL7Hash.get("Auftraggeber") + "||"+HL7Hash.get("Name")+"||" + GebDat + "|" + HL7Hash.get("Geschlecht")+"\n"
                     + "ORC|RE|" + HL7Hash.get("Auftragsnummer") + "|||CM" + "\n"
                     + "OBR|1|"+HL7Hash.get("Auftragsnummer")+"||||"+HL7Hash.get("Auftragsausgangsdatum")+"||||lab||||routine" + "\n"
-                    + "OBX|1|TX|"+HL7Hash.get("LOINC1")+"||"+HL7Hash.get("Result1a")+" "+HL7Hash.get("Befund")+"|||||F|||"+HL7Hash.get("Auftragsausgangsdatum")+"||"+HL7Hash.get("Befundend")+"\n";
-            if (!HL7Hash.get("Result1").isEmpty()) {parsedtext = parsedtext + "OBX|1|NM|"+HL7Hash.get("LOINC1")+"|1|"+HL7Hash.get("Result1")+"|"+HL7Hash.get("Einheit1")+"|"+HL7Hash.get("Reference1")+"||||F"+"\n";}
-            if (!HL7Hash.get("Result1Old").isEmpty()) {parsedtext = parsedtext + "OBX|2|NM|"+HL7Hash.get("LOINC1")+"|1|"+HL7Hash.get("Result1Old")+"|"+HL7Hash.get("Einheit1")+"|"+HL7Hash.get("Reference1")+"||||F|||"+HL7Hash.get("Result1OldDate")+"\n";}
-            if (!HL7Hash.get("Result2").isEmpty()) {parsedtext = parsedtext + "OBX|3|NM|"+HL7Hash.get("LOINC2")+"|1|"+HL7Hash.get("Result2")+"|"+HL7Hash.get("Einheit2")+"|"+HL7Hash.get("Reference2")+"||||F"+"\n";}
-            if (!HL7Hash.get("Result2Old").isEmpty()) {parsedtext = parsedtext + "OBX|4|NM|"+HL7Hash.get("LOINC2")+"|1|"+HL7Hash.get("Result2Old")+"|"+HL7Hash.get("Einheit2")+"|"+HL7Hash.get("Reference2")+"||||F|||"+HL7Hash.get("Result2OldDate");}
+                    + "OBX|1|TX|"+HL7Hash.get("LOINC1a")+"||"+HL7Hash.get("Result1a")+" "+HL7Hash.get("Befund")+"|||||F|||"+HL7Hash.get("Auftragsausgangsdatum")+"||"+HL7Hash.get("Befundend")+"\n";
+            if (!HL7Hash.get("Result1").isEmpty()) {
+                OBXNR += 1;
+                parsedtext = parsedtext + "OBX|"+OBXNR+"|NM|"+HL7Hash.get("LOINC1")+"||"+HL7Hash.get("Result1")+"|"+HL7Hash.get("Einheit1")+"|"+HL7Hash.get("Reference1")+"||||F"+"\n";
+            }
+
+            if (!HL7Hash.get("Result1Old").isEmpty()) {
+                OBXNR += 1;
+                parsedtext = parsedtext + "OBX|"+OBXNR+"|NM|"+HL7Hash.get("LOINC1")+"||"+HL7Hash.get("Result1Old")+"|"+HL7Hash.get("Einheit1")+"|"+HL7Hash.get("Reference1")+"||||F|||"+HL7Hash.get("Result1OldDate")+"\n";
+            }
+            if (!HL7Hash.get("Result2").isEmpty()) {
+                OBXNR += 1;
+                parsedtext = parsedtext + "OBX|"+OBXNR+"|NM|"+HL7Hash.get("LOINC2")+"||"+HL7Hash.get("Result2")+"|"+HL7Hash.get("Einheit2")+"|"+HL7Hash.get("Reference2")+"||||F"+"\n";
+            }
+            if (!HL7Hash.get("Result2Old").isEmpty()) {
+                OBXNR += 1;
+                parsedtext = parsedtext + "OBX|"+OBXNR+"|NM|"+HL7Hash.get("LOINC2")+"||"+HL7Hash.get("Result2Old")+"|"+HL7Hash.get("Einheit2")+"|"+HL7Hash.get("Reference2")+"||||F|||"+HL7Hash.get("Result2OldDate")+"\n";
+            }
+            if (!HL7Hash.get("Result3Old").isEmpty()) {
+                OBXNR += 1;
+                parsedtext = parsedtext + "OBX|"+OBXNR+"|NM|"+HL7Hash.get("LOINC1")+"||"+HL7Hash.get("Result3Old")+"|"+HL7Hash.get("Einheit2")+"|"+HL7Hash.get("Reference2")+"||||F|||"+HL7Hash.get("Result3OldDate")+"\n";
+            }
+            if (!HL7Hash.get("Result4Old").isEmpty()) {
+                OBXNR += 1;
+                parsedtext = parsedtext + "OBX|"+OBXNR+"|NM|"+HL7Hash.get("LOINC1")+"||"+HL7Hash.get("Result4Old")+"|"+HL7Hash.get("Einheit2")+"|"+HL7Hash.get("Reference2")+"||||F|||"+HL7Hash.get("Result4OldDate")+"\n";
+            }
+            if (!HL7Hash.get("Result5Old").isEmpty()) {
+                OBXNR += 1;
+                parsedtext = parsedtext + "OBX|"+OBXNR+"|NM|"+HL7Hash.get("LOINC1")+"|1|"+HL7Hash.get("Result5Old")+"|"+HL7Hash.get("Einheit2")+"|"+HL7Hash.get("Reference2")+"||||F|||"+HL7Hash.get("Result5OldDate")+"\n";
+            }
+
 
             StringBuilder dokTitle = new StringBuilder();
-            dokTitle.append(Path).append(HL7Hash.get("Institution")).append(" ").append(dokID).append(".txt");
+            dokTitle.append(Path).append(HL7Hash.get("Institution")).append(" ").append(dokID).append(".hl7");
             String dokTitleString = String.valueOf(dokTitle);
             SocketConnector Sender = new SocketConnector();
             if (!PropController.sockPath) {

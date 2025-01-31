@@ -82,6 +82,7 @@ public class InfliximabCHUV {
             if (s.contains("élevé")) {
                 int begindex = s.indexOf("vé");
                 EntnahmeDatum = s.substring(begindex + 6, begindex + 14);
+                EntnahmeDatum = changeDateForm.dateTurner(EntnahmeDatum);
                 break;
             }
         }
@@ -107,7 +108,8 @@ public class InfliximabCHUV {
             if (splitText[i].contains("Enregistré")) {
                 int begindex = splitText[i].indexOf("ré");
                 AuftragseingangsDatum = splitText[i].substring(begindex+6,begindex+14);
-                AuftragseingangsDatum = AuftragseingangsDatum.replace(".","").replace(",","").trim();;
+                AuftragseingangsDatum = AuftragseingangsDatum.replace(".","").replace(",","").trim();
+                AuftragseingangsDatum = changeDateForm.dateTurner(AuftragseingangsDatum);
                 break;
             }
         }
@@ -145,6 +147,7 @@ public class InfliximabCHUV {
             int begindex = splitText[i].indexOf("complet");
             AuftragsausgangsDatum = splitText[i].substring(begindex + 11, begindex + 19);
             AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
+            AuftragsausgangsDatum = changeDateForm.dateTurner(AuftragsausgangsDatum);
             break;
         }
         }
@@ -163,18 +166,20 @@ public class InfliximabCHUV {
         }
         return Result1;
     }
-        public static String getResult1OldDate(String[] splitText) {
-            String Result1OldDate = "";
-            for (int i = 0; i < splitText.length; i++) {
-                if (splitText[i].contains("Infliximab")) {
-                    int begindex = splitText[i].indexOf("ml");
-                    Result1OldDate = splitText[i].substring(begindex+12);
-                    Result1OldDate = Result1OldDate.replace("(","").replace(")","").replace("u", "");
-                    Result1OldDate = Result1OldDate.replace(".","").replace(",","").trim();
-                    break;
-                }
+    public static String getResult1OldDate(String[] splitText) {
+        String Result1OldDate = "";
+        for (String s : splitText) {
+            if (s.contains("Infliximab")) {
+                System.out.println("///////////" + s + "!!!!!!");
+                int begindex = s.indexOf("mab");
+                Result1OldDate = s.substring(begindex + 10, begindex + 23);
+                Result1OldDate = Result1OldDate.replace("(", "").replace(")", "").replace("u", "");
+                Result1OldDate = Result1OldDate.replace(".", "").replace(",", "").trim();
+                Result1OldDate = changeDateForm.dateTurner(Result1OldDate);
+                break;
             }
-            return Result1OldDate;
+        }
+        return Result1OldDate;
     }
     public static String getReference1(String[] splitText) {
         String Reference1 = "";
@@ -232,9 +237,11 @@ public class InfliximabCHUV {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("anti-Infliximab")) {
                 int begindex = splitText[i].indexOf("ml");
-                Result2OldDate = splitText[i].substring(begindex+12);
+                Result2OldDate = splitText[i].substring(begindex+12,begindex+20);
+                System.out.println(splitText[i]+"!!!!!!!!!!!!!!!!");
                 Result2OldDate = Result2OldDate.replace("(","").replace(")","").replace("u", "");
                 Result2OldDate = Result2OldDate.replace(".","").replace(",","").trim();
+                Result2OldDate = changeDateForm.dateTurner(Result2OldDate);
                 break;
             }
         }
@@ -245,7 +252,7 @@ public class InfliximabCHUV {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("anti-Infliximab")) {
                 int begindex = splitText[i].indexOf("ml");
-                Result2Old = splitText[i].substring(begindex+7,begindex+12);
+                Result2Old = splitText[i].substring(begindex+6,begindex+10);
                 Result2Old = Result2Old.replace("(","").replace(")","").replace("u", "");
                 Result2Old = Result2Old.replace(".","").replace(",","").trim();
                 break;
@@ -260,11 +267,21 @@ public class InfliximabCHUV {
         list.put("PID","");
         list.put("Geschlecht","");
         list.put("LOINC1","39803-2^inFLIXimab [Mass/volume] in Serum or Plasma^LN");
+        list.put("LOINC1a","39803-2^inFLIXimab [Mass/volume] in Serum or Plasma^LN");
         list.put("LOINC2","86896-8^inFLIXimab [Mass/volume] in Serum or Plasma by Immunoassay^LN");
         list.put("Einheit1","ug/mL");
         list.put("Einheit2","ng/mL");
         list.put("Result1a","");
         list.put("Befund","");
+        list.put("Result3Old","");
+        list.put("Result3OldDate","");
+        list.put("Result4Old","");
+        list.put("Result4OldDate","");
+        list.put("Result5Old","");
+        list.put("Result5OldDate","");
+        list.put("Reference2","");
+        list.put("Result2Old","");
+        list.put("Result2OldDate","");
 
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));

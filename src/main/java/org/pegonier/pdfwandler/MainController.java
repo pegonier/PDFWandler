@@ -19,6 +19,7 @@ import java.util.Properties;
 public class MainController {
 
     public Button Properties;
+    public Button sender;
     String chosenDokStr = "kein Dokument gewählt";
     HashMap<String, String> dokHashmap;
     @FXML
@@ -52,38 +53,49 @@ public class MainController {
             currentDir = currentDir.replace("\\","/");
             currentpropDir = currentDir+"/PDFWandler.properties";
             currentLogDir = currentDir+"/PDFWandler.log";
-            System.out.println(currentDir);}
-        catch (Exception e) {currentText.setText("bitte Eingangspfad setzten");}
+            System.out.println(currentDir);
+        }
+        catch (Exception e) {currentText.setText("bitte Eingangspfad setzten");
+        }
         try (FileInputStream probfis = new FileInputStream(currentpropDir);
              FileInputStream logfis = new FileInputStream(currentLogDir)) {
-            props.load(probfis);
-            logs.load(logfis);
-            PathMap = new HashMap<>(props);
-            logfile = new HashMap<>(logs);
-            File f = new File(String.valueOf(PathMap.get("InPath")));
-            CheckInFolder doks = new CheckInFolder();
-            String[] dokList = doks.listDir(f);
-            if (dokList != null) {
-                ObservableList<String> list = DokChoice.getItems();
-                if (list != null) {
-                    list.addAll(Arrays.asList(dokList));
-                } else {
-                    currentText.setText("Fehler beim Laden der Dokumentenliste");
+                props.load(probfis);
+                logs.load(logfis);
+                PathMap = new HashMap<>(props);
+                logfile = new HashMap<>(logs);
+                File f = new File(String.valueOf(PathMap.get("InPath")));
+                CheckInFolder doks = new CheckInFolder();
+                String[] dokList = doks.listDir(f);
+                if (dokList != null) {
+                    ObservableList<String> list = DokChoice.getItems();
+                    if (list != null) {
+                        list.addAll(Arrays.asList(dokList));
+                    }
+                    else
+                    {
+                        currentText.setText("Fehler beim Laden der Dokumentenliste");
+                    }
                 }
-            } else {
+                else
+                {
                 currentText.setText("Keine Dokumente im Eingangspfad gefunden");
             }
             logfile.put(LocalDateTime.now(), System.getProperty("user.name"));
 
             DokChoice.setOnAction((event) -> pruefen());
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
+            logfile.put("New","Logfile");
+            LogSaver.saveLog(logfile,currentLogDir);
             e.printStackTrace();
             logfile.put(LocalDateTime.now(), " Path Error");
             currentText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
         }
-        logString = logString + logfile+"\n";
+        logString = logString + logfile.toString()+"\n";
         LogField.setText(logString);
         LogSaver.saveLog(logfile,currentLogDir);
+        if (!PropController.sockPath) {sender.setText("speichern");}
+
     }
 
     public void pruefen() {
@@ -99,6 +111,8 @@ public class MainController {
                 logString = logString + logfile+"\n";
                 LogField.setText(logString);
                 LogSaver.saveLog(logfile,currentLogDir);
+                if (PropController.sockPath) {sender.setText("senden");}
+                else {sender.setText("speichern");}
 
             } catch (Exception e) {
                 currentText.setText("Bitte eine Datei wählen");
@@ -112,9 +126,16 @@ public class MainController {
             HL7Parser outPars = new HL7Parser();
             outPars.pars(dokHashmap, Path);
             String dest = "Parsed: "+chosenDokStr;
-            logfile.put(LocalDateTime.now(), System.getProperty(dest)+ " gesendet");
-            LogField.appendText(logfile+"\n");
-            currentText.setText(DokChoice.getValue() + " gesendet");
+            if (PropController.sockPath) {
+                logfile.put(LocalDateTime.now(), System.getProperty(dest) + " gesendet");
+                LogField.appendText(logfile + "\n");
+                currentText.setText(DokChoice.getValue() + " gesendet " + "\n"+ SocketConnector.getMessage);
+            }
+            else {
+                logfile.put(LocalDateTime.now(), System.getProperty(dest) + " gespeichert");
+                LogField.appendText(logfile + "\n");
+                currentText.setText(DokChoice.getValue() + " gespeichert");
+            }
 
         }
         catch (Exception e) {

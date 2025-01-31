@@ -3,7 +3,6 @@ module org.pegonier.pdfwandler {
     requires javafx.fxml;
     requires javafx.base;
     requires javafx.graphics;
-
     requires org.kordamp.bootstrapfx.core;
     requires itextpdf;
     requires jdk.jdi;

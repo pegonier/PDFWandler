@@ -84,7 +84,7 @@ public class AdalimumabCHUV {
                 int begindex = s.indexOf("vé");
                 EntnahmeDatum = s.substring(begindex + 6, begindex + 14);
                 EntnahmeDatum = EntnahmeDatum.replace("le", "");
-                // EntnahmeDatum = EntnahmeDatum.substring(0,9);
+                EntnahmeDatum = changeDateForm.dateTurner(EntnahmeDatum);
                 break;
             }
         }
@@ -111,6 +111,7 @@ public class AdalimumabCHUV {
                 int begindex = s.indexOf("ré");
                 AuftragseingangsDatum = s.substring(begindex + 6, begindex + 14);
                 AuftragseingangsDatum = AuftragseingangsDatum.replace(".", "").replace(",", "").trim();
+                AuftragseingangsDatum = changeDateForm.dateTurner(AuftragseingangsDatum);
                 break;
             }
         }
@@ -148,6 +149,7 @@ public class AdalimumabCHUV {
                 int begindex = s.indexOf("complet du");
                 AuftragsausgangsDatum = s.substring(begindex + 10, begindex + 19);
                 AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".", "").replace(",", "").trim();
+                AuftragsausgangsDatum = changeDateForm.dateTurner(AuftragsausgangsDatum);
                 break;
             }
         }
@@ -218,9 +220,7 @@ public class AdalimumabCHUV {
                 Result1OldDate = s.substring(endIndex - 12, endIndex);
                 Result1OldDate = Result1OldDate.replace("(", "").replace(")", "").replace("p", "");
                 Result1OldDate = Result1OldDate.replace(".", "").replace(",", "").trim();
-                if (countNumbers(Result1OldDate) != 6) {
-                    Result1OldDate = "";
-                }
+                Result1OldDate = changeDateForm.dateTurner(Result1OldDate);
                 break;
             }
         }
@@ -231,7 +231,7 @@ public class AdalimumabCHUV {
         for (String s : splitText) {
             if (s.contains("anti-")) {
                 int begindex = s.indexOf("mab");
-                Result2 = s.substring(begindex + 4, begindex + 9);
+                Result2 = s.substring(begindex + 4, begindex + 7);
                 Result2 = Result2.replace("(", "").replace(")", "").replace("p", "");
                 Result2 = Result2.trim();
                 break;
@@ -260,9 +260,7 @@ public class AdalimumabCHUV {
                 Result2OldDate = s.substring(endIndex - 12, endIndex);
                 Result2OldDate = Result2OldDate.replace("(", "").replace(")", "").replace("p", "");
                 Result2OldDate = Result2OldDate.replace(".", "").replace(",", "").trim();
-                if (countNumbers(Result2OldDate) != 6) {
-                    Result2OldDate = "";
-                }
+                Result2OldDate = changeDateForm.dateTurner(Result2OldDate);
                 break;
             }
         }
@@ -293,8 +291,18 @@ public class AdalimumabCHUV {
         list.put("Befund","");
         list.put("Befundend","");
         list.put("Result1a","");
+        list.put("LOINC1a","74117-3^Adalimumab [Mass/volume] in Serum or Plasma^LN");
         list.put("LOINC1","74117-3^Adalimumab [Mass/volume] in Serum or Plasma^LN");
         list.put("LOINC2","74116-5^Adalimumab [Mass/volume] in Serum or Plasma^LN");
+        list.put("Result3Old","");
+        list.put("Result3OldDate","");
+        list.put("Result4Old","");
+        list.put("Result4OldDate","");
+        list.put("Result5Old","");
+        list.put("Result5OldDate","");
+        list.put("Reference2","");
+        list.put("Result2Old","");
+        list.put("Result2OldDate","");
 
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));

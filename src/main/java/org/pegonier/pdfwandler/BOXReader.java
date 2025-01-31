@@ -8,17 +8,26 @@ import java.io.File;
 import java.io.IOException;
 
 public class BOXReader {
-    public String read(String Path) {
-        String text = "";
+    public String read(String path) {
+        StringBuilder text = new StringBuilder();
         try {
-            File file = new File(Path);
+            File file = new File(path);
             PDDocument document = Loader.loadPDF(file);
             PDFTextStripper pdfStripper = new PDFTextStripper();
-            text = pdfStripper.getText(document);
+
+            int pageCount = document.getNumberOfPages();
+            for (int i = 1; i <= pageCount; i++) {
+                pdfStripper.setStartPage(i);
+                pdfStripper.setEndPage(i);
+                String pageText = pdfStripper.getText(document);
+                text.append("Page ").append(i).append(":\n").append(pageText).append("\n\n");
+            }
+
             document.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return text;
+        System.out.println(text.toString());
+        return text.toString();
     }
 }
