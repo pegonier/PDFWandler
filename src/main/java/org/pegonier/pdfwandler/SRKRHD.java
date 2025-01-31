@@ -1,6 +1,7 @@
 package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class SRKRHD {
 
@@ -69,9 +70,9 @@ public class SRKRHD {
         }
         return Result1;
     }
-    public static HashMap<String, String> list(String text) {
-        HashMap<String, String> list = new HashMap<>();
-        System.out.println("New"+"\n");
+    public static TreeMap<String, String> list(String text) {
+        TreeMap<String, String> list = new TreeMap<>();
+        list.put("DokType", "RHD-Resultat");
         list.put("Name","");
         list.put("PID","");
         list.put("Geschlecht","");

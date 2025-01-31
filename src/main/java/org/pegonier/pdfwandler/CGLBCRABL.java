@@ -1,10 +1,11 @@
 package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class CGLBCRABL {
 
-    public static HashMap<String, String> listMap = new HashMap<>();
+    public static TreeMap<String, String> listMap = new TreeMap<>();
 
     public static String[] splitText(String text) {
         return text.split("\n");
@@ -234,7 +235,21 @@ public class CGLBCRABL {
         }
         return Befunder;
     }
-    public static HashMap<String, String> list(String text) {
+    public static String getBefund(String[] splitText) {
+        StringBuilder befund = new StringBuilder();
+        for (int i = 0; i < splitText.length; i++) {
+            if (splitText[i].contains("Interpretation ") || splitText[i].contains("negativ") || splitText[i].contains("anskript")) {
+                i += 1;
+                while (i < splitText.length && !splitText[i].contains("Frei") && !splitText[i].contains("abe")) {
+                    befund.append(splitText[i]).append(" ");
+                    i += 1;
+                }
+            }
+        }
+        return befund.toString().replace(",", ".").replace("\n", " ").replaceAll("\\p{C}", "").trim();
+    }
+    public static TreeMap<String, String> list(String text) {
+        listMap.put("DokType", "BCRABL-Resultat");
         listMap.put("Reference1","");
         listMap.put("Reference2","");
         listMap.put("Institution","");
@@ -335,7 +350,7 @@ public class CGLBCRABL {
         try {
             getResult2(splitText(text));
         } catch (Exception e) {
-            MainController.logfile.put("Befundend","Keine Befundende erkennbar");
+            MainController.logfile.put("Result2","Kein weiteres Resultat erkennbar");
             listMap.put("Result2","");
         }
         try {
@@ -344,7 +359,12 @@ public class CGLBCRABL {
             MainController.logfile.put("Befundend","Keine Befundende erkennbar");
             listMap.put("ResultOld","");
         }
-
+        try {
+            listMap.put("Befund", getBefund(splitText(text)));
+        } catch (Exception e) {
+            MainController.logfile.put("Befund","Keine Befund erkennbar");
+            listMap.put("Befund","");
+        }
         return listMap;
     }
 }

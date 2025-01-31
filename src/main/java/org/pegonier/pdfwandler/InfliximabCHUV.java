@@ -1,6 +1,7 @@
 package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class InfliximabCHUV {
     public static int countNumbers(String str) {
@@ -22,19 +23,17 @@ public class InfliximabCHUV {
         for (int i = 0; i < splitText.length; i++) {
             if (splitText[i].contains("concerné")) {
                 if (countNumbers(splitText[i+1]) == 8) {
-                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
                     GebDatum = splitText[i+1];
-                }
+                    GebDatum = GebDatum.replace("(","").replace(")","").replace("F","").replace("M","");
+                    }
                 else if (countNumbers(splitText[i-1]) == 8) {
                     GebDatum = splitText[i-1];
                     GebDatum = GebDatum.replace("Au","").replace("concerné","").replace("médecin","").replace("M","");
-                    GebDatum = splitText[i-1];
-                }
+                    }
                 else if (countNumbers(splitText[i]) == 8) {
                     GebDatum = splitText[i];
                     GebDatum = GebDatum.replace("Au","").replace("médecin","").replace("concerné","").replace("M","");
-                    GebDatum = splitText[i];
-                }
+                    }
                 break;
             }
         }
@@ -75,21 +74,18 @@ public class InfliximabCHUV {
         }
         return nummer;
     }
-
     public static String getEntnahmeDatum(String[] splitText) {
         String EntnahmeDatum = "";
         for (String s : splitText) {
             if (s.contains("élevé")) {
                 int begindex = s.indexOf("vé");
-                EntnahmeDatum = s.substring(begindex + 6, begindex + 14);
+                EntnahmeDatum = s.substring(begindex + 6, begindex + 15).replace(".","").replace(",","").trim();
                 EntnahmeDatum = changeDateForm.dateTurner(EntnahmeDatum);
                 break;
             }
         }
-        EntnahmeDatum = EntnahmeDatum.replace(".","").replace(",","").trim();
         return EntnahmeDatum;
     }
-
     public static String getEntnahmeZeit(String[] splitText) {
         String Entnahmezeit = "";
         for (String s : splitText) {
@@ -139,27 +135,26 @@ public class InfliximabCHUV {
         }
         return Name;
     }
-
     public static String getAuftragsausgangsDatum(String[] splitText) {
         String AuftragsausgangsDatum = "";
         for (int i = 0; i < splitText.length; i++) {
-        if (splitText[i].contains("Enregistré")) {
-            int begindex = splitText[i].indexOf("complet");
-            AuftragsausgangsDatum = splitText[i].substring(begindex + 11, begindex + 19);
-            AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
-            AuftragsausgangsDatum = changeDateForm.dateTurner(AuftragsausgangsDatum);
-            break;
-        }
+            if (splitText[i].contains("Enregistré")) {
+                int begindex = splitText[i].indexOf("complet");
+                AuftragsausgangsDatum = splitText[i].substring(begindex + 11, begindex + 19);
+                AuftragsausgangsDatum = AuftragsausgangsDatum.replace(".","").replace(",","").trim();
+                AuftragsausgangsDatum = changeDateForm.dateTurner(AuftragsausgangsDatum);
+                break;
+            }
         }
         return AuftragsausgangsDatum;
     }
 
     public static String getResult1(String[] splitText) {
         String Result1 = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("Infliximab")) {
-                int begindex = splitText[i].indexOf("mab");
-                Result1 = splitText[i].substring(begindex + 4, begindex + 9);
+        for (String s : splitText) {
+            if (s.contains("Infliximab")) {
+                int begindex = s.indexOf("mab");
+                Result1 = s.substring(begindex + 4, begindex + 9);
                 Result1 = Result1.replace("(", "").replace(")", "").replace("p", "").replace("u", "").trim();
                 break;
             }
@@ -170,11 +165,9 @@ public class InfliximabCHUV {
         String Result1OldDate = "";
         for (String s : splitText) {
             if (s.contains("Infliximab")) {
-                System.out.println("///////////" + s + "!!!!!!");
-                int begindex = s.indexOf("mab");
-                Result1OldDate = s.substring(begindex + 10, begindex + 23);
-                Result1OldDate = Result1OldDate.replace("(", "").replace(")", "").replace("u", "");
-                Result1OldDate = Result1OldDate.replace(".", "").replace(",", "").trim();
+                int begindex = s.indexOf("ml");
+                Result1OldDate = s.substring(begindex + 12, begindex + 23);
+                Result1OldDate = Result1OldDate.replace("(", "").replace(")", "").replace(".", "").trim();
                 Result1OldDate = changeDateForm.dateTurner(Result1OldDate);
                 break;
             }
@@ -221,10 +214,10 @@ public class InfliximabCHUV {
         return Result2;
     }public static String getReference2(String[] splitText) {
         String Reference2 = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("anti-Infliximab")) {
-                int begindex = splitText[i].indexOf("ml");
-                Reference2 = splitText[i].substring(begindex + 3, begindex + 6);
+        for (String s : splitText) {
+            if (s.contains("anti-Infliximab")) {
+                int begindex = s.indexOf("ml");
+                Reference2 = s.substring(begindex + 3, begindex + 6);
                 Reference2 = Reference2.replace("?", "≥").replace(")", "").replace("p", "").replace("u", "");
                 Reference2 = Reference2.trim();
                 break;
@@ -234,13 +227,12 @@ public class InfliximabCHUV {
     }
     public static String getResult2OldDate(String[] splitText) {
         String Result2OldDate = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("anti-Infliximab")) {
-                int begindex = splitText[i].indexOf("ml");
-                Result2OldDate = splitText[i].substring(begindex+12,begindex+20);
-                System.out.println(splitText[i]+"!!!!!!!!!!!!!!!!");
-                Result2OldDate = Result2OldDate.replace("(","").replace(")","").replace("u", "");
-                Result2OldDate = Result2OldDate.replace(".","").replace(",","").trim();
+        for (String s : splitText) {
+            if (s.contains("anti-Infliximab")) {
+                int begindex = s.indexOf("ml");
+                Result2OldDate = s.substring(begindex + 12, begindex + 20);
+                Result2OldDate = Result2OldDate.replace("(", "").replace(")", "").replace("u", "");
+                Result2OldDate = Result2OldDate.replace(".", "").replace(",", "").trim();
                 Result2OldDate = changeDateForm.dateTurner(Result2OldDate);
                 break;
             }
@@ -249,20 +241,20 @@ public class InfliximabCHUV {
     }
     public static String getResult2Old(String[] splitText) {
         String Result2Old = "";
-        for (int i = 0; i < splitText.length; i++) {
-            if (splitText[i].contains("anti-Infliximab")) {
-                int begindex = splitText[i].indexOf("ml");
-                Result2Old = splitText[i].substring(begindex+6,begindex+10);
-                Result2Old = Result2Old.replace("(","").replace(")","").replace("u", "");
-                Result2Old = Result2Old.replace(".","").replace(",","").trim();
+        for (String s : splitText) {
+            if (s.contains("anti-Infliximab")) {
+                int begindex = s.indexOf("ml");
+                Result2Old = s.substring(begindex + 6, begindex + 10);
+                Result2Old = Result2Old.replace("(", "").replace(")", "").replace("u", "");
+                Result2Old = Result2Old.replace(".", "").replace(",", "").trim();
                 break;
             }
         }
         return Result2Old;
     }
-    public static HashMap<String, String> list(String text) {
-        HashMap<String, String> list = new HashMap<>();
-        System.out.println("New"+"\n");
+    public static TreeMap<String, String> list(String text) {
+        TreeMap<String, String> list = new TreeMap<>();
+        list.put("DokType", "Infliximab-Resultat");
         list.put("Name","");
         list.put("PID","");
         list.put("Geschlecht","");

@@ -1,6 +1,7 @@
 package org.pegonier.pdfwandler;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class AnmeldungRadiologieBalgrist {
 
@@ -232,10 +233,14 @@ public class AnmeldungRadiologieBalgrist {
     }
 
 
-    public static HashMap<String, String> list(String text) {
-        HashMap<String, String> list = new HashMap<>();
-        System.out.println("New");
-        
+    public static TreeMap<String, String> list(String text) {
+        TreeMap<String, String> list = new TreeMap<>();
+        list.put("PID","");
+        list.put("FID","");
+        list.put("Versicherung","");
+        list.put("VersicherungsID","");
+        list.put("Arbeitgeber","");
+        list.put("DokType", "Radiologieanmeldung");
         try {
             list.put("Geburtsdatum", getGebDatum(splitText(text)));
         } catch (Exception e) {

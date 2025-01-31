@@ -343,8 +343,9 @@ public class CGLJak2 {
             }
         }
     }*/
-    public static HashMap<String, String> list(String text) {
-        HashMap<String, String> list = new HashMap<>();
+    public static TreeMap<String, String> list(String text) {
+        TreeMap<String, String> list = new TreeMap<>();
+        list.put("DokType", "Jak2-Resultat");
         list.put("Result1Old","");
         list.put("Result1OldDate","");
         list.put("Reference1","");

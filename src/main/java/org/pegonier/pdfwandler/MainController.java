@@ -15,13 +15,14 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
+import java.util.TreeMap;
 
 public class MainController {
 
     public Button Properties;
     public Button sender;
     String chosenDokStr = "kein Dokument gewählt";
-    HashMap<String, String> dokHashmap;
+    TreeMap<String, String> dokHashmap;
     @FXML
     Label currentText;
     @FXML
@@ -95,17 +96,25 @@ public class MainController {
         LogField.setText(logString);
         LogSaver.saveLog(logfile,currentLogDir);
         if (!PropController.sockPath) {sender.setText("speichern");}
+        else if (PropController.sockPath) {sender.setText("senden");}
 
     }
 
     public void pruefen() {
             chosenDokStr = PathMap.get("InPath").toString()+DokChoice.getValue();
+            StringBuilder textMap = new StringBuilder();
             System.out.println("Path" + chosenDokStr);
             try {
                 dokSourceCheck dokCheck = new dokSourceCheck();
                 currentText.setText(dokCheck.dokSource(chosenDokStr));
                 dokHashmap = dokCheck.dokHash;
-                //currentText.setText(String.valueOf(dokHashmap));
+                System.out.println(dokHashmap);
+                for (String key : dokHashmap.keySet()) {
+                    if (!dokHashmap.get(key).isEmpty()) {
+                        textMap.append(key + " = "+dokHashmap.get(key) +"\n");
+                    }
+                }
+                currentText.setText(textMap.toString());
 
                 logfile.put(LocalDateTime.now(),chosenDokStr);
                 logString = logString + logfile+"\n";
@@ -123,8 +132,8 @@ public class MainController {
         System.out.println(chosenDokStr);
         String Path = PathMap.get("OutPath").toString();
         try {
-            HL7Parser outPars = new HL7Parser();
-            outPars.pars(dokHashmap, Path);
+            HL7Parser parsOut = new HL7Parser();
+            parsOut.pars(dokHashmap, Path);
             String dest = "Parsed: "+chosenDokStr;
             if (PropController.sockPath) {
                 logfile.put(LocalDateTime.now(), System.getProperty(dest) + " gesendet");
@@ -151,7 +160,7 @@ public class MainController {
         try {
             dokSourceCheck dokCheck = new dokSourceCheck();
             currentText.setText(dokCheck.dokSource(Path));
-            HashMap<String, String> dokHashmap = dokCheck.dokHash;
+            TreeMap<String, String> dokHashmap = dokCheck.dokHash;
             String Auftragsnummer = dokHashmap.get("Auftragsnummer");
             inputField.setText(Auftragsnummer);
 
