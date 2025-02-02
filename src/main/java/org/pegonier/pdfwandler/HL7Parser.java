@@ -16,6 +16,8 @@ public class HL7Parser {
                 String parsedtext = "MSH|^~\\&|ERA|UKBAL|Medavis RIS|MEDAVIS|" + dokID2Sec + "||ORM^O01|" + dokID + "|P|2.5||||||885x/1" + "\n" +
                         "PID|||" + HL7Hash.get("PID") + "||" + HL7Hash.get("Name") + "||" + GebDat + "|" + HL7Hash.get("Geschlecht") + "|||" + HL7Hash.get("Adresse") + "||^PRN^CP^^" + HL7Hash.get("Telefon") + "~^PRN^PH^^" + HL7Hash.get("Mobile") + "|" + HL7Hash.get("eMail") + "|" + "\n" +
                         "PV1||O|ERA||||" + HL7Hash.get("Zuweiser") + "^^^" + HL7Hash.get("AdresseZuweiser") + "^^" + HL7Hash.get("TelefonZuweiser") + "||||||||||||||||" + HL7Hash.get("FID") + "\n" +
+                        "IN1|1|"+HL7Hash.get("Kostentraeger")+"|"+HL7Hash.get("VersicherungsID") +"|"+HL7Hash.get("Versicherung")+"||||SEL||20250101|20251231"+"\n"+
+                        "IN2||"+HL7Hash.get("Versicherungsnummer")+"|||"+HL7Hash.get("Arbeitgeber")+"\n"+
                         "ORC|NW|" + dokID2Sec + "|||RP||" + HL7Hash.get("Termin") + "|||||" + HL7Hash.get("Zuweiser") + "\n" +
                         "OBR|1||" + dokID2Sec + "||" + HL7Hash.get("Untersuchung") + "||||||||||" + HL7Hash.get("Zuweiser") + "\n" +
                         "OBX|1|TX|" + HL7Hash.get("KlinischeAngaben") + "|" + HL7Hash.get("Warnhinweise") + "|" + HL7Hash.get("Fragestellung") + "||||||F";
@@ -44,8 +46,6 @@ public class HL7Parser {
                 String dokID2Sec = dokID.substring(0, 14);
                 String parsedtext = "MSH|^~\\&||" + HL7Hash.get("Institution") + "||" + HL7Hash.get("Auftraggeber") + "|" + dokID2Sec + "||ORU^R01|" + dokID + "|T|2.5||||||8859/1" + "\n"
                         + "PID|1||" + HL7Hash.get("PID") + "^^^" + HL7Hash.get("Auftraggeber") + "||" + HL7Hash.get("Name") + "||" + GebDat + "|" + HL7Hash.get("Geschlecht") + "\n"
-                        + "IN1|1|"+HL7Hash.get("Kostentraeger")+"|"+HL7Hash.get("VersicherungsID") +"|"+HL7Hash.get("Versicherung")+"||||SEL||20250101|20251231"+"\n"
-                        + "IN2||"+HL7Hash.get("Versicherungsnummer")+"|||"+HL7Hash.get("Arbeitgeber")+"\n"
                         + "ORC|RE|" + HL7Hash.get("Auftragsnummer") + "|||CM" + "\n"
                         + "OBR|1|" + HL7Hash.get("Auftragsnummer") + "||||" + HL7Hash.get("Auftragsausgangsdatum") + "||||lab||||routine" + "\n"
                         + "OBX|1|TX|" + HL7Hash.get("LOINC1a") + "||" + HL7Hash.get("Result1a") + " " + HL7Hash.get("Befund") + "|||||F|||" + HL7Hash.get("Auftragsausgangsdatum") + "||" + HL7Hash.get("Befundend") + "\n";

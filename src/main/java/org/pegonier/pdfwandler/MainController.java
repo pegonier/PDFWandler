@@ -21,20 +21,13 @@ public class MainController {
 
     public Button Properties;
     public Button sender;
+    public TextField inputFieldX;
+    public ChoiceBox <String>KeyChoice;
+    public Button change;
     String chosenDokStr = "kein Dokument gewählt";
     TreeMap<String, String> dokHashmap;
     @FXML
     Label currentText;
-    @FXML
-    private TextField inputField;
-    @FXML
-    private TextField inputField2;
-    @FXML
-    private TextField inputField3;
-    @FXML
-    private TextField inputField4;
-    @FXML
-    private TextField inputField5;
     @FXML
     public TextField LogField;
     @FXML
@@ -42,8 +35,9 @@ public class MainController {
     public static HashMap<Object, Object> PathMap;
     public static String currentDir ="";
     public static String currentLogDir;
-    public static HashMap<Object, Object> logfile;
+    public static TreeMap<Object, Object> logfile;
     public static String logString = "";
+    protected StringBuilder textMap = new StringBuilder();
     String currentpropDir ="";
     @FXML
     private void initialize() throws IOException {
@@ -58,12 +52,21 @@ public class MainController {
         }
         catch (Exception e) {currentText.setText("bitte Eingangspfad setzten");
         }
-        try (FileInputStream probfis = new FileInputStream(currentpropDir);
-             FileInputStream logfis = new FileInputStream(currentLogDir)) {
+        File testfile = new File (currentLogDir);
+        if (testfile.exists()) {
+            FileInputStream logfis = new FileInputStream(currentLogDir);
+            logs.load(logfis);
+            logfile = new TreeMap<>(logs);
+        }
+        else{
+            TreeMap logfile = new TreeMap();
+            logfile.put("New ", "Logfile");
+            LogSaver.saveTreeMapToFile(logfile, currentLogDir);
+        }
+        try (FileInputStream probfis = new FileInputStream(currentpropDir)
+             ) {
                 props.load(probfis);
-                logs.load(logfis);
                 PathMap = new HashMap<>(props);
-                logfile = new HashMap<>(logs);
                 File f = new File(String.valueOf(PathMap.get("InPath")));
                 CheckInFolder doks = new CheckInFolder();
                 String[] dokList = doks.listDir(f);
@@ -81,51 +84,63 @@ public class MainController {
                 {
                 currentText.setText("Keine Dokumente im Eingangspfad gefunden");
             }
-            logfile.put(LocalDateTime.now(), System.getProperty("user.name"));
+            logfile.put(LocalDateTime.now()+": ", System.getProperty("user.name"));
 
             DokChoice.setOnAction((event) -> pruefen());
         }
         catch (IOException e) {
-            logfile.put("New","Logfile");
-            LogSaver.saveLog(logfile,currentLogDir);
-            e.printStackTrace();
+            textSaver.SaveTxT("",currentpropDir);
             logfile.put(LocalDateTime.now(), " Path Error");
+            LogSaver.saveTreeMapToFile(logfile,currentLogDir);
+           //e.printStackTrace();
             currentText.setText("Keine Dateien gefunden, bitte Einstellungen prüfen");
         }
         logString = logString + logfile.toString()+"\n";
         LogField.setText(logString);
         LogSaver.saveLog(logfile,currentLogDir);
         if (!PropController.sockPath) {sender.setText("speichern");}
-        else if (PropController.sockPath) {sender.setText("senden");}
-
     }
 
     public void pruefen() {
-            chosenDokStr = PathMap.get("InPath").toString()+DokChoice.getValue();
-            StringBuilder textMap = new StringBuilder();
-            System.out.println("Path" + chosenDokStr);
-            try {
-                dokSourceCheck dokCheck = new dokSourceCheck();
-                currentText.setText(dokCheck.dokSource(chosenDokStr));
-                dokHashmap = dokCheck.dokHash;
-                System.out.println(dokHashmap);
-                for (String key : dokHashmap.keySet()) {
-                    if (!dokHashmap.get(key).isEmpty()) {
-                        textMap.append(key + " = "+dokHashmap.get(key) +"\n");
-                    }
+        //Pfad des ausgewählten Dokuments erstellen
+        chosenDokStr = PathMap.get("InPath").toString()+DokChoice.getValue();
+        System.out.println("Path" + chosenDokStr);
+        //Liste der Dokumente auf Eingangslaufwerk ausgeben
+        try {
+            textMap.setLength(0);
+            dokSourceCheck dokCheck = new dokSourceCheck();
+            currentText.setText(dokCheck.dokSource(chosenDokStr));
+            dokHashmap = dokCheck.dokHash;
+            System.out.println(dokHashmap);
+            for (String key : dokHashmap.keySet()) {
+                if (!dokHashmap.get(key).isEmpty()) {
+                    textMap.append(key).append(" = ").append(dokHashmap.get(key)).append("\n");
                 }
-                currentText.setText(textMap.toString());
-
-                logfile.put(LocalDateTime.now(),chosenDokStr);
-                logString = logString + logfile+"\n";
-                LogField.setText(logString);
-                LogSaver.saveLog(logfile,currentLogDir);
-                if (PropController.sockPath) {sender.setText("senden");}
-                else {sender.setText("speichern");}
-
-            } catch (Exception e) {
+            }
+            currentText.setText(textMap.toString());
+            logfile.put(LocalDateTime.now()+": ",chosenDokStr);
+            logString = logString + logfile+"\n";
+            LogField.setText(logString);
+            LogSaver.saveLog(logfile,currentLogDir);
+            if (PropController.sockPath) {sender.setText("senden");}
+            else {sender.setText("speichern");}
+            }
+        catch (Exception e) {
                 currentText.setText("Bitte eine Datei wählen");
             }
+            if (dokHashmap != null) {
+                String[] KeyList = dokHashmap.keySet().toArray(new String[0]);
+                ObservableList<String> list = KeyChoice.getItems();
+                if (list != null) {
+                    list.clear();
+                    list.addAll(Arrays.asList(KeyList));
+                }
+                else
+                {
+                    currentText.setText("Fehler beim Laden der Schlüsselliste");
+                }
+            }
+        KeyChoice.setOnAction((event) -> inputFieldX.setText(dokHashmap.get(KeyChoice.getValue())));
         }
     @FXML
     protected void umwandeln() throws IOException {
@@ -136,89 +151,33 @@ public class MainController {
             parsOut.pars(dokHashmap, Path);
             String dest = "Parsed: "+chosenDokStr;
             if (PropController.sockPath) {
-                logfile.put(LocalDateTime.now(), System.getProperty(dest) + " gesendet");
-                LogField.appendText(logfile + "\n");
-                currentText.setText(DokChoice.getValue() + " gesendet " + "\n"+ SocketConnector.getMessage);
+                logfile.put(LocalDateTime.now()+": ", System.getProperty(dest) + " gesendet");
+                //LogField.setText(logfile + "\n");
+                LogField.setText(DokChoice.getValue() + " gesendet " + "\n"+ SocketConnector.getMessage);
             }
             else {
-                logfile.put(LocalDateTime.now(), System.getProperty(dest) + " gespeichert");
-                LogField.appendText(logfile + "\n");
-                currentText.setText(DokChoice.getValue() + " gespeichert");
+                logfile.put(LocalDateTime.now()+": ", System.getProperty(dest) + " gespeichert");
+                //LogField.appendText(logfile + "\n");
+                LogField.setText(DokChoice.getValue() + " gespeichert");
             }
-
         }
         catch (Exception e) {
             System.out.println("erstellen des Dokuments fehlgeschlagen");
-            logfile.put(LocalDateTime.now(), System.getProperty("erstellen des Dokuments fehlgeschlagen "+DokChoice.getValue()));
-            LogField.appendText(logfile+"\n");
-            currentText.setText("Versand von "+DokChoice.getValue() + " fehlgeschlagen");
+            logfile.put(LocalDateTime.now()+": ", System.getProperty("erstellen des Dokuments fehlgeschlagen "+DokChoice.getValue()));
+            //LogField.appendText(logfile+"\n");
+            LogField.setText("Versand von "+DokChoice.getValue() + " fehlgeschlagen");
         }
         LogSaver.saveLog(logfile,currentLogDir);
     }
-
     public void openPDF(String Path) {
         try {
             dokSourceCheck dokCheck = new dokSourceCheck();
             currentText.setText(dokCheck.dokSource(Path));
             TreeMap<String, String> dokHashmap = dokCheck.dokHash;
-            String Auftragsnummer = dokHashmap.get("Auftragsnummer");
-            inputField.setText(Auftragsnummer);
-
         } catch (Exception e) {
             currentText.setText("Bitte eine Datei wählen");
         }
     }
-    @FXML
-    public void ANRsetzen(ActionEvent event) {
-        String Pid = inputField.getText();
-        dokHashmap.put("Auftragsnummer",Pid);
-        String dokType=String.valueOf(dokHashmap);
-        dokType=dokType.replace("}", "");
-        dokType=dokType.replace("{", " ");
-        dokType=dokType.replace(",","\n");
-        currentText.setText(dokType);
-    }
-    @FXML
-    public void PIDsetzen(ActionEvent event ) {
-        String Pid = inputField2.getText();
-        dokHashmap.put("PID",Pid);
-        String dokType=String.valueOf(dokHashmap);
-        dokType=dokType.replace("}", "");
-        dokType=dokType.replace("{", " ");
-        dokType=dokType.replace(",","\n");
-        currentText.setText(dokType);
-    }
-    @FXML
-    public void Name(ActionEvent event) {
-        String Name= inputField3.getText();
-        dokHashmap.put("Name",Name);
-        String dokType=String.valueOf(dokHashmap);
-        dokType=dokType.replace("}", "");
-        dokType=dokType.replace("{", " ");
-        dokType=dokType.replace(",","\n");
-        currentText.setText(dokType);
-    }
-    @FXML
-    public void Geburtsdatum(ActionEvent event) {
-        String Geburtsdatum = inputField4.getText();
-        dokHashmap.put("Geburtsdatum",Geburtsdatum);
-        String dokType=String.valueOf(dokHashmap);
-        dokType=dokType.replace("}", "");
-        dokType=dokType.replace("{", " ");
-        dokType=dokType.replace(",","\n");
-        currentText.setText(dokType);
-    }
-    @FXML
-    public void Gender(ActionEvent event) {
-        String Geschlecht= inputField5.getText();
-        dokHashmap.put("Geschlecht",Geschlecht);
-        String dokType=String.valueOf(dokHashmap);
-        dokType=dokType.replace("}", "");
-        dokType=dokType.replace("{", " ");
-        dokType=dokType.replace(",","\n");
-        currentText.setText(dokType);
-    }
-
     public void Properties(ActionEvent event) {
         FXMLLoader fxmlLoader = null;
         try {
@@ -234,5 +193,27 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setzen() throws IOException {
+        if (!inputFieldX.getText().isEmpty()&&!KeyChoice.getValue().isEmpty()) {
+            String ValueX = inputFieldX.getText();
+            String KeyX = KeyChoice.getValue();
+            dokHashmap.put(KeyX, ValueX);
+            inputFieldX.clear();
+            KeyChoice.setValue("");
+            textMap.setLength(0);
+            for (String key : dokHashmap.keySet()) {
+                if (!dokHashmap.get(key).isEmpty()) {
+                    textMap.append(key + " = "+dokHashmap.get(key) +"\n");
+                }
+            }
+            currentText.setText(textMap.toString());
+            logfile.put(LocalDateTime.now()+": ",KeyX+" geändert zu: "+ ValueX);
+            logString = logString + logfile+"\n";
+            LogField.setText(logString);
+            LogSaver.saveLog(logfile,currentLogDir);
+        }
+        else inputFieldX.setText("Wert eingeben");
     }
 }

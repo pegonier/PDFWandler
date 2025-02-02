@@ -54,7 +54,7 @@ import java.util.Map;
 71         */
                 ReceivingApplication<Message> handler = new ReceiverApplication();
                 server.registerApplication("ADT", "A01", handler);
-                 MainController.logfile.put(LocalDateTime.now()," start Receiving Socket");
+                 MainController.logfile.put(LocalDateTime.now().toString()," start Receiving Socket");
 
 
                 /*
@@ -125,7 +125,7 @@ import java.util.Map;
 
                String responseString = p.encode(response);
                System.out.println("Received response:\n" + responseString);
-               MainController.logfile.put(LocalDateTime.now(),"Received response: " + responseString);
+               MainController.logfile.put(LocalDateTime.now().toString(),"  Received response:  " + responseString);
                getMessage = "Received response: " +"\n"+ responseString;
                LogSaver.saveLog(MainController.logfile,MainController.currentLogDir);
                /*

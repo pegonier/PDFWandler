@@ -27,7 +27,7 @@ public class BOXReader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(text.toString());
+        //System.out.println(text.toString());
         return text.toString();
     }
 }

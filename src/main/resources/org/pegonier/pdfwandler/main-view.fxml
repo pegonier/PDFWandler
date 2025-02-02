@@ -17,21 +17,23 @@
     </padding>
    <AnchorPane prefHeight="616.0" prefWidth="396.0">
       <children>
-          <ScrollPane fx:id="scrollPane" layoutX="-2.0" layoutY="108.0" prefHeight="468.0" prefWidth="396.0">
+          <ScrollPane fx:id="scrollPane" layoutX="-2.0" layoutY="101.0" prefHeight="475.0" prefWidth="396.0">
               <content>
-                  <!-- Das Label bleibt innerhalb der ScrollPane -->
                   <Label fx:id="currentText" alignment="TOP_LEFT" prefWidth="380.0" wrapText="true" />
               </content>
           </ScrollPane><Region prefHeight="0.0" prefWidth="350.0" />
          <ChoiceBox fx:id="DokChoice" layoutY="2.0" prefHeight="25.0" prefWidth="396.0" />
-          <TextField fx:id="inputField" layoutY="33.0" onAction="#ANRsetzen" prefHeight="25.0" prefWidth="138.0" promptText="Auftragsnummer" />
+          <!--<TextField fx:id="inputField" layoutY="33.0" onAction="#ANRsetzen" prefHeight="25.0" prefWidth="138.0" promptText="Auftragsnummer" />
          <TextField fx:id="inputField2" layoutY="58.0" onAction="#PIDsetzen" prefWidth="138.0" promptText="PID" />
          <TextField fx:id="inputField3" layoutY="83.0" onAction="#Name" prefHeight="25.0" prefWidth="196.0" promptText="Nachname^Vorname" />
          <TextField fx:id="inputField4" layoutX="220.0" layoutY="33.0" onAction="#Geburtsdatum" prefHeight="25.0" prefWidth="95.0" promptText="Geburtsdatum" />
-         <TextField fx:id="inputField5" layoutX="220.0" layoutY="58.0" onAction="#Gender" prefHeight="25.0" prefWidth="95.0" promptText="Gender" />
-          <Button fx:id="sender" alignment="TOP_CENTER" layoutX="220.0" layoutY="83.0" onAction="#umwandeln" text="Senden" />
+         <TextField fx:id="inputField5" layoutX="220.0" layoutY="58.0" onAction="#Gender" prefHeight="25.0" prefWidth="95.0" promptText="Gender" />-->
+          <Button fx:id="sender" alignment="TOP_CENTER" layoutX="310.0" layoutY="69.0" onAction="#umwandeln" text="Ausgabe" />
           <Button fx:id="Properties" layoutX="371.0" layoutY="33.0" onAction="#Properties" text="*" />
          <TextField fx:id="LogField" layoutX="-2.0" layoutY="576.0" prefHeight="25.0" prefWidth="396.0" promptText="log" />
+          <TextField fx:id="inputFieldX" layoutX="138.0" layoutY="33.0" prefHeight="25.0" prefWidth="165.0" promptText="Wert" />
+         <ChoiceBox fx:id="KeyChoice" layoutY="33.0" prefHeight="25.0" prefWidth="138.0" />
+         <Button fx:id="change" alignment="TOP_CENTER" layoutX="310.0" layoutY="33.0" onAction="#setzen" text="Ändern" />
       </children>
    </AnchorPane>
 
