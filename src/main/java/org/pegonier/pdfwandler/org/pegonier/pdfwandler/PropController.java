@@ -1,0 +1,105 @@
+package org.pegonier.pdfwandler;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Properties;
+
+public class PropController {
+    HashMap<String, String> Paths = new HashMap<>();
+
+    static String thisDir = MainController.currentDir;
+    public TextField HostName;
+    public TextField Port;
+    public Button Socket;
+    @FXML
+    private TextField InField;
+    @FXML
+    private TextField OutField;
+    private Stage newWindow;
+    public static boolean sockPath;
+
+    public void closeWindow() {
+        if (newWindow != null) {
+            newWindow.close();
+        }
+    }
+
+    @FXML
+    private void initialize() {
+
+        try {
+            InField.setText((String) MainController.PathMap.get("InPath"));
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            InField.setText("Eingangspfad eingeben");
+        }
+        try {
+            OutField.setText((String) MainController.PathMap.get("OutPath"));
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            OutField.setText("Eingangspfad eingeben");
+        }try {
+            HostName.setText((String) MainController.PathMap.get("HostName"));
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            HostName.setText("Eingangspfad eingeben");
+        }
+        try {
+            Port.setText((String) MainController.PathMap.get("Port"));
+        } catch (Exception e) {
+            //throw new RuntimeException(e);
+            Port.setText("Eingangspfad eingeben");
+        }
+        System.out.println(MainController.PathMap.get("Socket"));
+        if ((MainController.PathMap.get("Socket") != null)) {
+            Socket.setText((String) MainController.PathMap.get("Socket"));
+        } else {
+            Socket.setText("Socket");
+        }
+    }
+
+    public void setPath(ActionEvent event) throws FileNotFoundException {
+        MainController.PathMap.put("InPath", InField.getText());
+        MainController.PathMap.put("OutPath", OutField.getText());
+        MainController.PathMap.put("HostName", HostName.getText());
+        MainController.PathMap.put("Port", Port.getText());
+        MainController.PathMap.put("Socket", Socket.getText());
+        String Dir = thisDir+"/PDFWandler.properties";
+        Properties props = new Properties();
+        props.putAll(MainController.PathMap);
+        System.out.println(MainController.PathMap);
+        try {
+            props.store(new FileOutputStream(Dir), null);
+            closeWindow();
+            MainController.logfile.put(LocalDateTime.now().toString(), props);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setStage(Stage newWindow) {
+        this.newWindow = newWindow;
+    }
+
+    public boolean setSocket() {
+        if (Socket.getText().equals("Socket")) {
+            Socket.setText("Data Path");
+            sockPath = false;
+        } else if (Socket.getText().equals("Data Path")) {
+            Socket.setText("Socket");
+            sockPath = true;
+        }
+        return sockPath;
+    }
+    public boolean getSocket() {
+        return sockPath;
+    }
+}
